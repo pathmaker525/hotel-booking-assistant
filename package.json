@@ -1,0 +1,22 @@
+{
+  "name": "hotelstellar",
+  "version": "1.0.0",
+  "description": "hotel webpage project",
+  "main": "main.js",
+  "scripts": {
+    "test": "node prototype.js",
+    "run": "node main.js"
+  },
+  "author": "Sungryeol Park",
+  "license": "ISC",
+  "dependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rabelais88/hotelstellar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rabelais88/hotelstellar/issues"
+  },
+  "homepage": "https://github.com/rabelais88/hotelstellar#readme"
+}
