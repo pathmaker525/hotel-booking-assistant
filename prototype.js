@@ -95,5 +95,12 @@ io.on("connection", (skt) => {
 })
 */
 
+app.get('/adminJSON', (req,res) => {
+
+})
+app.get('/admin', (req,res) => {
+  
+})
+
 
 process.on('unhandledRejection', r => console.log(r)); //error catcher
