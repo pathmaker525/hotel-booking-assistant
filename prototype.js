@@ -107,7 +107,15 @@ app.get('/admin', (req,res) => {
 })
 
 app.get('/admin/login',(req,res)=>{
-  console.log(req.query.userid)
+  console.log('login attempt: ' + req.query.userid)
+  //temporary admin id&pw
+  if(req.query.userid === "admin" && req.query.userpw ==="1234"){
+    res.json({token:"123456789authorized"})
+  }
+})
+
+app.get('/admin/dbreset',(req,res)=>{
+  
 })
 
 process.on('unhandledRejection', r => console.log(r)); //error catcher
