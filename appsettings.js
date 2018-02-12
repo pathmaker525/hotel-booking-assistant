@@ -18,8 +18,7 @@ const dbsettings = {
     database:"hotelstellar",
     password:"devtest1",
     port:5432
-  },
-  heroku:"postgresql://secret url"
+  }
 }
 
 module.exports = dbsettings;

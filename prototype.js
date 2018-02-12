@@ -27,15 +27,18 @@ const uploader = multer({dest: tmpDir})
 //access to static files
 app.use('/pub', express.static(pubDir))
 app.use('/dist', express.static(dstDir))
-
 function getSettings (){
   if(!process.argv[2]){
-    console.log("config has not set up! please enter proper settings - node main.js [setting]\navailable settings are...\n")
+    console.log("no config designated ! please enter proper settings !!\n\
+     - node main.js postgresql://~(url)'\n\
+     - node main.js [setting]\n\
+     -------------------------\n\
+     available settings are...\n")
     Object.keys(dbsettings).map((el) => {
       console.log(el)
     })
     process.exit()
-  }else{
+  }else if (process.argv[2]){
     let result = {}
     Object.keys(dbsettings).map((el) => {
       if(el === process.argv[2]){
@@ -49,6 +52,8 @@ function getSettings (){
       }
     })
     return result
+  }else if(/^(postgresql:\/\/.*)$/.test(process.argv[2])){
+    return process.argv[2].slice()
   }
 }
 
