@@ -6,3 +6,5 @@
 - PostgreSQL(pg-promise)
 - express/ejs
 - react(admin page === SPA)
+- webpack
+- babel
