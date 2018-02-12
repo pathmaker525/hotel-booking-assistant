@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
   </head>
   <style>
     form{
@@ -14,82 +11,6 @@
   </style>
   <body>
     <div id="root"></div>
-    <script type="text/babel">
-      class FrmLogin extends React.Component {
-        constructor(props){
-          super(props)
-          //stage 0===login 1===main
-          this.state = {
-            accessToken: "",
-            userID: "",
-            userPW: "",
-            stage: 0
-          }
-        }
-
-        updateValues(e){
-          const key = e.target.name
-          this.setState({
-            [key]:e.target.value
-          })
-        }
-
-        loginAttempt = (e) => {
-            e.preventDefault()
-            //pretends faux login
-            this.authorize(this.state.userID,this.state.userPW)
-        }
-
-        authorize(targetId,targetPw){
-          alert("로그인을 시도합니다")
-          if(targetId==="admin" && targetPw==="1234"){
-            this.state.accessToken="authorized12345678"
-            this.state.stage = 1
-            alert("로그인에 성공하였습니다")
-
-            ReactDOM.render((<FrmLogin/>),document.getElementById('root'))
-          }else{
-            alert("잘못된 로그인 시도입니다")
-          }
-        }
-
-        render(){
-
-          const updateValues = e => this.updateValues(e)
-          const loginAttempt = e => this.loginAttempt(e)
-
-          let frmLoginRender = (<div>잘못된 페이지로 이동하였습니다. 다시 접속해주세요.</div>)
-          if(this.state.stage === 0){
-            frmLoginRender = (
-            <form onSubmit={loginAttempt}>
-              <div>
-                <label for="id"> ID </label>
-                <input name="userID" type="text" placeholder="아이디를 입력하세요" onChange={updateValues} />
-              </div>
-              <div>
-                <label for="pw"> PW </label>
-                <input name="userPW" type="password" placeholder="비밀번호를 입력해 주세요" onChange={updateValues} />
-              </div>
-              <input type="submit" value="로그인"/>
-            </form>
-            )
-          }else if(this.state.stage === 1){
-            frmLoginRender = (
-              <p>당신은 로그인 되었습니다</p>
-            )
-          }
-
-
-          return frmLoginRender
-        }
-        
-      }
-
-      const content = (
-        <FrmLogin />
-      )
-
-      ReactDOM.render(content,document.getElementById('root'))
-    </script>
+    <script src="dist/bundle.js"></script>
   </body>
 </html>

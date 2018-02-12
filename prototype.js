@@ -21,11 +21,12 @@ const multer = require('multer')
 const path = require('path')
 const tmpDir = path.join(__dirname,'tmp')
 const pubDir = path.join(__dirname, 'pub')
+const dstDir = path.join(__dirname, 'dist')
 const uploader = multer({dest: tmpDir})
 
-
 //access to static files
-app.use('/pub', express.static(pubDir));
+app.use('/pub', express.static(pubDir))
+app.use('/dist', express.static(dstDir))
 
 function getSettings (){
   if(!process.argv[2]){
@@ -65,7 +66,6 @@ http.listen(process.env.PORT || 3000, function(){
   console.log("server is up at " + this.address().port)
 })
 
-
 function getIP(req){
   const ip = req.headers['x-forwarded-for'] || 
   req.connection.remoteAddress || 
@@ -95,12 +95,14 @@ io.on("connection", (skt) => {
 })
 */
 
-app.get('/adminJSON', (req,res) => {
-
-})
 app.get('/admin', (req,res) => {
-  
+  fs.readFile('admin.html','utf8',(err,data)=>{
+    res.send(data)
+  })
 })
 
+app.get('/admin/login',(req,res)=>{
+  console.log(req.query.userid)
+})
 
 process.on('unhandledRejection', r => console.log(r)); //error catcher
