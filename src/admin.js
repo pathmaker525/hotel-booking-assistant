@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import request from 'superagent'
+import styles from './admin.css'
 
 class AdminAPP extends React.Component {
   constructor(props){
@@ -12,6 +13,7 @@ class AdminAPP extends React.Component {
       userPW: "",
       stage: 0,
       modalstate: 0,
+      events:[]
     }
 
     //this function will be bound to 'this' of top parent object(AdminAPP)
@@ -45,24 +47,35 @@ class AdminAPP extends React.Component {
               userpw:this.state.userPW
             })
             .end((err,data)=>{
-              console.log('login finished-token received')
+              console.log('login finished-token received :' + data.body.token)
               this.setState({
-                accessToken:data.token,
+                accessToken:data.body.token,
                 stage:1,
                 userPW:""})
             })
   }
 
-  dbreset(){
+  dbreset(e){
+    e.preventDefault()
     console.log("DB초기화가 요청되었습니다.")
+
     this.setState({modalstate:1})
   }
 
-  closemodal(){
+  closemodal(e){
+    e.preventDefault()
     this.setState({modalstate:0})
   }
   acceptmodal1(){
-
+    request.get('/admin/dbreset')
+    .query({
+      token:this.state.accessToken
+    })
+    .end((err,data)=>{
+      console.log('db reset result:' + data.body.result)
+    })
+    alert('데이터베이스가 초기화 되었습니다')
+    this.setState({modalstate:0})
   }
 
   render(){
@@ -90,7 +103,7 @@ class AdminAPP extends React.Component {
         <form>
           <p>사용자 아이디 : {this.state.userID}</p>
           <FrmControlPanel dbreset={this.dbreset} />
-          <Modal modalstate={this.state.modalstate} closemodal1={this.closemodal}/>
+          <Modal modalstate={this.state.modalstate} closemodal={this.closemodal} acceptmodal1={this.acceptmodal1}/>
         </form>
       )
     }
@@ -106,7 +119,7 @@ class FrmControlPanel extends React.Component {
   render(){
     return(
       <div>
-        <input type="button" value="데이터 삭제" onClick={this.props.dbreset}/>
+        <button onClick={this.props.dbreset}>데이터 삭제</button>
       </div>
     )
   }
@@ -118,12 +131,22 @@ class Modal extends React.Component {
     this.state = {
       prompt:""
     }
+    this.accept1 = this.accept1.bind(this)
+    this.updatePrompt = this.updatePrompt.bind(this)
   }
 
   updatePrompt(e){
+    e.preventDefault()
     this.setState({
       prompt:e.target.value
     })
+  }
+
+  accept1(e){
+    e.preventDefault()
+    if(this.state.prompt === "초기화"){
+      this.props.acceptmodal1() 
+    }
   }
 
   render(){
@@ -143,6 +166,12 @@ class Modal extends React.Component {
       padding: 30
     }
 
+    const warning ={
+      color:'red',
+      padding:10,
+      backgroundColor:'pink'
+    }
+
     let ms = this.props.modalstate
     if(!ms){
       return null
@@ -151,15 +180,25 @@ class Modal extends React.Component {
         <div style={styleBack}>
           <div style={styleModal}>
             {ms}
-            DB를 정말로 초기화하시겠습니까? 동의할 경우 초기화라고 입력해 주세요
+            <p style={warning}>DB를 정말로 초기화하시겠습니까? 동의할 경우 '초기화'라고 입력해 주세요</p>
             <input type="text" onChange={this.updatePrompt} />
-            <button onClick={this.props.acceptmodal1}>입력</button>
+            <button onClick={this.accept1}>입력</button>
             <button onClick={this.props.closemodal}>창 닫기</button>
           </div>
         </div>
         )
     }
   }
+}
+
+class LiEvent extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {
+
+    }
+  }
+
 }
 
 const content = (

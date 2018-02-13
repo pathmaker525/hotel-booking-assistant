@@ -1,0 +1,35 @@
+button {
+  background-color: lightgrey;
+  padding:7px;
+  border-radius:5px;
+}
+button:hover{
+  background-color:darkgrey;
+}
+
+button:active{
+  background-color:rgb(87, 87, 87);
+}
+
+input[type=submit]{
+  background-color: lightgrey;
+  padding:7px;
+  border-radius:5px;
+}
+input[type=submit]:hover{
+  background-color:darkgrey;
+}
+input[type=submit]:active{
+  background-color:rgb(87, 87, 87);
+}
+
+input[type=text]{
+  padding:7px;
+  border-radius:5px;
+  border:solid 1px grey;
+}
+input[type=password]{
+  padding:7px;
+  border-radius:5px;
+  border:solid 1px grey;
+}

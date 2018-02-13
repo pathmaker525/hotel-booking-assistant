@@ -106,16 +106,37 @@ app.get('/admin', (req,res) => {
   })
 })
 
+//temporary token
+const propertoken = "123456789authorized"
+
 app.get('/admin/login',(req,res)=>{
   console.log('login attempt: ' + req.query.userid)
   //temporary admin id&pw
   if(req.query.userid === "admin" && req.query.userpw ==="1234"){
-    res.json({token:"123456789authorized"})
+    res.json({token:propertoken})
   }
 })
 
 app.get('/admin/dbreset',(req,res)=>{
-  
+  console.log('db reset attempt: ' + req.query.token)
+  if(req.query.token === propertoken){
+    db.task( t => {
+      return t.none('DROP TABLE IF EXISTS events;') // this won't have any consequence if the table doesn't exist
+      .then(()=>{
+        return t.none('CREATE TABLE events (eventid serial not null primary key, datestart date,\
+          dateend date, title varchar(20), brief varchar(40), description text, image varchar(40),\
+          enabled bool, priority int, link varchar(100), shadecolor varchar(11));')
+      })
+    }).then(()=>{
+      res.json({result:true})
+    }).catch(err=>{
+      res.json({result:false})
+    })
+  }else{
+    res.json({result:false})
+  }
 })
+
+
 
 process.on('unhandledRejection', r => console.log(r)); //error catcher
