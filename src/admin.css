@@ -33,3 +33,32 @@ input[type=password]{
   border-radius:5px;
   border:solid 1px grey;
 }
+
+.warning {
+  color:red;
+  padding:10px;
+  background-Color:pink;
+}
+
+.modal{
+  background-Color: #fff;
+  border-radius: 5px;
+  max-width:500px;
+  max-height:300px;
+  margin: 0 auto;
+  padding:30px;
+}
+
+.modalBack{
+  position:fixed;
+  top:0;bottom:0;left:0;right:0;
+  background-Color:rgba(0,0,0,0.4);
+  padding:50px;
+}
+
+form{
+  background-color:#33658A;
+  color:white;
+  padding:20px;
+  border-radius:10px;
+}

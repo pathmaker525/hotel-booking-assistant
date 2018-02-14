@@ -11,7 +11,8 @@ module.exports = {
   module:{
     rules:[
       {  test: /.js$/, loader: 'babel-loader', options: {presets:['es2015','react']}  },
-      { test: /\.css$/, loader: 'style-loader!css-loader'}
+      {test: /\.css$/, loader:'style-loader'},
+      { test: /\.css$/, loader: 'css-loader' ,options:{modules:true,localIdentName: "[name]__[local]___[hash:base64:5]" }}
     ]
   },
   plugins: [

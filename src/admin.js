@@ -2,7 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import request from 'superagent'
 import styles from './admin.css'
+import moment from 'moment'
 
+// ------------------------------ parent admin form
 class AdminAPP extends React.Component {
   constructor(props){
     super(props)
@@ -52,6 +54,10 @@ class AdminAPP extends React.Component {
                 accessToken:data.body.token,
                 stage:1,
                 userPW:""})
+              request.get('/eventJSON')
+                      .end((err,data)=>{
+                        this.setState({event:data.body})
+                      })
             })
   }
 
@@ -66,6 +72,7 @@ class AdminAPP extends React.Component {
     e.preventDefault()
     this.setState({modalstate:0})
   }
+
   acceptmodal1(){
     request.get('/admin/dbreset')
     .query({
@@ -78,13 +85,16 @@ class AdminAPP extends React.Component {
     this.setState({modalstate:0})
   }
 
+  modifyEvent(eventid){
+    alert(`이벤트${eventid} 편집합니다`)
+  }
+
   render(){
     const updateValues = e => this.updateValues(e)
     const loginAttempt = e => this.loginAttempt(e)
-
-    let frmLoginRender = (<div>잘못된 접속 시도입니다.</div>)
+    // ------------------------------ log-in page
     if(this.state.stage === 0){
-      frmLoginRender = (
+      return (
       <form onSubmit={loginAttempt}>
         <div>
           <label> ID </label>
@@ -97,34 +107,38 @@ class AdminAPP extends React.Component {
         <input type="submit" value="로그인"/>
       </form>
       )
+
     }else if(this.state.stage === 1){
       //------------------------the first page, when logged in
-      frmLoginRender = (
-        <form>
+
+      console.log('event json loaded :', this.state.event)
+
+      if(this.state.event){
+        return (
+          <form>
           <p>사용자 아이디 : {this.state.userID}</p>
-          <FrmControlPanel dbreset={this.dbreset} />
+          {
+            this.state.event.map((el,index)=>{
+            return <LiEvent eventid={el.eventid} title={el.title} startdate={el.datestart} enddate={el.dateend} modifyEvent={this.modifyEvent}/>
+            })
+          }
+          <button onClick={this.dbreset}>데이터 전부 초기화</button>
           <Modal modalstate={this.state.modalstate} closemodal={this.closemodal} acceptmodal1={this.acceptmodal1}/>
         </form>
-      )
+        )
+      }else{
+        //when json is not loaded yet if(!this.state.event)
+        return <div>정보를 읽고 있습니다</div>
+      }
+
+    }else{
+      return <div> 잘못된 접속 시도입니다. </div>
     }
-    return frmLoginRender
   }
   
 }
 
-class FrmControlPanel extends React.Component {
-  constructor(props){
-    super(props)
-  }
-  render(){
-    return(
-      <div>
-        <button onClick={this.props.dbreset}>데이터 삭제</button>
-      </div>
-    )
-  }
-}
-
+// ------------------------------ modal form
 class Modal extends React.Component {
   constructor(props){
     super(props)
@@ -150,37 +164,16 @@ class Modal extends React.Component {
   }
 
   render(){
-    const styleBack = {
-      position:'fixed',
-      top:0,bottom:0,left:0,right:0,
-      backgroundColor:'rgba(0,0,0,0.4)',
-      padding:50
-    }
-
-    const styleModal = {
-      backgroundColor: '#fff',
-      borderRadius: 5,
-      maxWidth:500,
-      maxHeight:300,
-      margin: '0 auto',
-      padding: 30
-    }
-
-    const warning ={
-      color:'red',
-      padding:10,
-      backgroundColor:'pink'
-    }
 
     let ms = this.props.modalstate
     if(!ms){
       return null
     }else if(ms === 1){
       return (
-        <div style={styleBack}>
-          <div style={styleModal}>
-            {ms}
-            <p style={warning}>DB를 정말로 초기화하시겠습니까? 동의할 경우 '초기화'라고 입력해 주세요</p>
+        <div className={styles.modalBack}>
+          <div className={styles.modal}>
+            modalstate:{ms}
+            <p className={styles.warning}>DB를 정말로 초기화하시겠습니까? 동의할 경우 '초기화'라고 입력해 주세요</p>
             <input type="text" onChange={this.updatePrompt} />
             <button onClick={this.accept1}>입력</button>
             <button onClick={this.props.closemodal}>창 닫기</button>
@@ -191,14 +184,32 @@ class Modal extends React.Component {
   }
 }
 
+// ------------------------------ event list component
 class LiEvent extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-
+      eventid:this.props.eventid,
+      title:this.props.title,
+      startdate:moment(this.props.startdate).format("YYYY.MM.DD"),
+      enddate:moment(this.props.enddate).format("YYYY.MM.DD")
     }
+    this.modify = this.modify.bind(this)
   }
-
+  modify(e){
+    e.preventDefault()
+    this.props.modifyEvent(Math.round(this.state.eventid))
+  }
+  //<LiEvent eventid="" title="" startdate="" enddate="" modifyEvent={this.modifyEvent}>
+  render(){
+    return(
+      <div>
+        <a href="#" onClick={this.modify}>
+          - {this.state.title} | {this.state.startdate} ~ {this.state.enddate}
+        </a>
+      </div>
+    )
+  }
 }
 
 const content = (
