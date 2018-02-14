@@ -40,6 +40,7 @@ class AdminAPP extends React.Component {
     this.updateFormValues = this.updateFormValues.bind(this)
     this.updateFormToggle = this.updateFormToggle.bind(this)
     this.updateValues = this.updateValues.bind(this)
+    this.updateDate = this.updateDate.bind(this)
     this.keyhandler = this.keyhandler.bind(this)
   }
 
@@ -63,6 +64,16 @@ class AdminAPP extends React.Component {
     this.setState({
       targetEvent: temp
     })
+  }
+
+  //TODO: check error from this point
+  updateDate(e, index, value){
+    console.log(e)
+    let temp = Object.assign(this.state.targetEvent)
+    temp[e.target.name] = value
+    this.setState({
+      targetEvent:temp
+    });
   }
 
   loginAttempt(e) {
@@ -198,14 +209,14 @@ class AdminAPP extends React.Component {
 
           <Toggle label="시행중인 이벤트" name="enabled" onToggle={this.updateFormToggle} labelPosition="right" toggled={ev.enabled} /> <br />
 
-          <DatePicker hintText="시작일자" name={ev.datestart} onChange={updateFormValues} />
-          <DatePicker hintText="종료일자" name={ev.dateend} onChange={updateFormValues} />
-          <SelectField floatingLabelText="중요도" value={ev.priority} onChange={updateFormValues}>
+          <DatePicker hintText="시작일자" name="datestart" value={ev.datestart} onChange={this.updateDate} /> <br />
+          <DatePicker hintText="종료일자" name="dateend" value={ev.dateend} onChange={this.updateDate} /> <br />
+          <SelectField floatingLabelText="중요도" name="priority" value={ev.priority} onChange={updateFormValues}>
             <MenuItem value={1} primaryText="매우중요 - 제일 먼저 표시" />
             <MenuItem value={2} primaryText="중요" />
             <MenuItem value={3} primaryText="보통" />
             <MenuItem value={4} primaryText="중요하지 않음 - 제일 나중에 표시" />
-          </SelectField>
+          </SelectField><br />
           
           <RaisedButton label="등록(수정)" onClick={this.acceptModify} />
           <RaisedButton label="삭제" onclick={this.eventDelete} />
