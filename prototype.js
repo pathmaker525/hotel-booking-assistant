@@ -87,7 +87,7 @@ app.get('/eventJSON', (req,res) => {
   })
   .catch((err)=>{
 
-  });
+  })
 })
 
 app.get('/', (req,res) => {
@@ -117,6 +117,31 @@ app.get('/admin/login',(req,res)=>{
   }
 })
 
+app.get('/admin/eventdetail',(req,res)=>{
+  console.log('request event detail: ' + req.query.eventid)
+  db.one('SELECT * FROM events WHERE eventid=$1;',req.query.eventid)
+  .then((eventdata)=>{
+    console.log("└", eventdata)
+    res.json(eventdata)
+  })
+  .catch((err)=>{
+    console.log(err)
+    console.log('no data available, send over false data')
+    //if there is no data available, send over an empty info
+    res.json({
+      eventid:req.query.eventid,
+      title:"",
+      brief:"",
+      description:"",
+      image:"",
+      enabled:true,
+      priority:1,
+      link:"",
+      shadecolor:""
+    })
+  })
+})
+
 app.get('/admin/dbreset',(req,res)=>{
   console.log('db reset attempt: ' + req.query.token)
   if(req.query.token === propertoken){
@@ -136,7 +161,5 @@ app.get('/admin/dbreset',(req,res)=>{
     res.json({result:false})
   }
 })
-
-
 
 process.on('unhandledRejection', r => console.log(r)); //error catcher
