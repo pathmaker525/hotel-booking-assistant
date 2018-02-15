@@ -109,6 +109,14 @@ app.get('/admin', (req,res) => {
 //temporary token
 const propertoken = "123456789authorized"
 
+function validateToken (targetToken) {
+  if(targetToken === propertoken){
+    return true
+  }else{
+    return false
+  }
+}
+
 app.get('/admin/login',(req,res)=>{
   console.log('login attempt: ' + req.query.userid)
   //temporary admin id&pw
@@ -121,30 +129,19 @@ app.get('/admin/eventdetail',(req,res)=>{
   console.log('request event detail: ' + req.query.eventid)
   db.one('SELECT * FROM events WHERE eventid=$1;',req.query.eventid)
   .then((eventdata)=>{
+    eventdata.datestart = moment(eventdata.datestart).format('YYYY-MM-DD')
+    eventdata.dateend = moment(eventdata.dateend).format('YYYY-MM-DD')
     console.log("└", eventdata)
     res.json(eventdata)
   })
   .catch((err)=>{
     console.log(err)
-    console.log('no data available, send over false data')
-    //if there is no data available, send over an empty info
-    res.json({
-      eventid:req.query.eventid,
-      title:"",
-      brief:"",
-      description:"",
-      image:"",
-      enabled:true,
-      priority:1,
-      link:"",
-      shadecolor:""
-    })
   })
 })
 
 app.get('/admin/dbreset',(req,res)=>{
   console.log('db reset attempt: ' + req.query.token)
-  if(req.query.token === propertoken){
+  if(validateToken(propertoken)){
     db.task( t => {
       return t.none('DROP TABLE IF EXISTS events;') // this won't have any consequence if the table doesn't exist
       .then(()=>{

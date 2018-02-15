@@ -11,6 +11,14 @@ import Toggle from 'material-ui/Toggle'
 import DatePicker from 'material-ui/DatePicker'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 
 
 // ------------------------------ parent admin form
@@ -40,14 +48,24 @@ class AdminAPP extends React.Component {
     this.updateFormValues = this.updateFormValues.bind(this)
     this.updateFormToggle = this.updateFormToggle.bind(this)
     this.updateValues = this.updateValues.bind(this)
-    this.updateDate = this.updateDate.bind(this)
     this.keyhandler = this.keyhandler.bind(this)
+    this.updateDateStart = this.updateDateStart.bind(this)
+    this.updateDateEnd = this.updateDateEnd.bind(this)
+    this.updatePriority = this.updatePriority.bind(this)
   }
 
   updateValues(e){
     const key = e.target.name
     this.setState({
       [key]:e.target.value
+    })
+  }
+
+  updateFormToggle(e, tgl){
+    let temp = Object.assign(this.state.targetEvent)
+    temp[e.target.name] = tgl
+    this.setState({
+      targetEvent: temp
     })
   }
 
@@ -58,22 +76,29 @@ class AdminAPP extends React.Component {
       targetEvent: temp
     })
   }
-  updateFormToggle(e, tgl){
-    let temp = Object.assign(this.state.targetEvent)
-    temp[e.target.name] = tgl
-    this.setState({
-      targetEvent: temp
-    })
+
+  updatePriority(e,index,value){
+    console.log(value)
+    this.state.targetEvent.priority = value
+    this.forceUpdate()
   }
 
-  //TODO: check error from this point
-  updateDate(e, index, value){
-    console.log(e)
+  //parameter 'e' apparently doesn't work
+  updateDateStart(e, date){
     let temp = Object.assign(this.state.targetEvent)
-    temp[e.target.name] = value
+    temp["datestart"] = date
+    console.log(date)
     this.setState({
       targetEvent:temp
-    });
+    })
+  }
+  updateDateEnd(e, date){
+    let temp = Object.assign(this.state.targetEvent)
+    temp["dateend"] = date
+    console.log(date)
+    this.setState({
+      targetEvent:temp
+    })
   }
 
   loginAttempt(e) {
@@ -135,7 +160,20 @@ class AdminAPP extends React.Component {
 
   addEvent(e){
     e.preventDefault()
-    this.modifyEvent(this.state.events.length + 1)
+    this.setState({stage:2,targetEvent:{
+      eventid:this.state.event.length + 1,
+      title:"",
+      brief:"",
+      description:"",
+      image:"",
+      enabled:true,
+      priority:1,
+      link:"",
+      shadecolor:"",
+      datestart:new Date(),
+      dateend:new Date()
+    }})
+    console.log(this.state.targetEvent)
   }
 
   modifyEvent(eventid){
@@ -179,11 +217,22 @@ class AdminAPP extends React.Component {
         return (
           <MuiThemeProvider>
           <p>사용자 아이디 : {this.state.userID}</p>
-          {
-            this.state.event.map((el,index)=>{
-            return <LiEvent eventid={el.eventid} title={el.title} startdate={el.datestart} enddate={el.dateend} modifyEvent={this.modifyEvent}/>
-            })
-          }
+          <Table>
+            <TableHeader displaySelectAll={false}>
+              <TableRow>
+                <TableHeaderColumn>이벤트명</TableHeaderColumn>
+                <TableHeaderColumn>시작일</TableHeaderColumn>
+                <TableHeaderColumn>종료일</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody showRowHover={true}>
+              {
+                this.state.event.map((el,index)=>{
+                return <LiEvent eventid={el.eventid} title={el.title} startdate={el.datestart} enddate={el.dateend} modifyEvent={this.modifyEvent}/>
+                })
+              }
+            </TableBody>
+          </Table>
           <RaisedButton label="이벤트 새로 추가" onClick={this.addEvent} />
           <RaisedButton label="데이터 전부 초기화" onClick={this.dbreset} />
           <Modal modalstate={this.state.modalstate} closemodal={this.closemodal} acceptmodal1={this.acceptmodal1}/>
@@ -196,7 +245,7 @@ class AdminAPP extends React.Component {
 
     }else if(this.state.stage === 2){
       //---------------------------event edit page
-      const ev = this.state.targetEvent
+      let ev = this.state.targetEvent
       return (
         <MuiThemeProvider>
 
@@ -207,15 +256,15 @@ class AdminAPP extends React.Component {
           <TextField floatingLabelText="관련 웹페이지 주소" value={ev.link} onChange={updateFormValues} name="link" fullWidth={true} /><br />
           <TextField floatingLabelText="상세 설명(여러줄 입력 가능)" value={ev.description} onChange={updateFormValues} name="description" multiLine={true} fullWidth={true} /> <br/>
 
-          <Toggle label="시행중인 이벤트" name="enabled" onToggle={this.updateFormToggle} labelPosition="right" toggled={ev.enabled} /> <br />
+          <Toggle label="시행중인 이벤트(해제할 경우 이벤트가 표시되지 않음)" name="enabled" onToggle={this.updateFormToggle} labelPosition="right" toggled={ev.enabled} /> <br />
 
-          <DatePicker hintText="시작일자" name="datestart" value={ev.datestart} onChange={this.updateDate} /> <br />
-          <DatePicker hintText="종료일자" name="dateend" value={ev.dateend} onChange={this.updateDate} /> <br />
-          <SelectField floatingLabelText="중요도" name="priority" value={ev.priority} onChange={updateFormValues}>
-            <MenuItem value={1} primaryText="매우중요 - 제일 먼저 표시" />
+          <DatePicker hintText="시작일자" name="datestart" value={ev.datestart} onChange={this.updateDateStart} defaultDate={ev.datestart} /> <br />
+          <DatePicker hintText="종료일자" name="dateend" value={ev.dateend} onChange={this.updateDateEnd} defaultDate={ev.dateend} /> <br />
+          <SelectField floatingLabelText="중요도(표시될 순서)" name="priority" value={ev.priority} onChange={this.updatePriority} autoWidth={true} >
+            <MenuItem value={1} primaryText="매우 중요" />
             <MenuItem value={2} primaryText="중요" />
             <MenuItem value={3} primaryText="보통" />
-            <MenuItem value={4} primaryText="중요하지 않음 - 제일 나중에 표시" />
+            <MenuItem value={4} primaryText="안 중요함" />
           </SelectField><br />
           
           <RaisedButton label="등록(수정)" onClick={this.acceptModify} />
@@ -296,11 +345,11 @@ class LiEvent extends React.Component{
   //<LiEvent eventid="" title="" startdate="" enddate="" modifyEvent={this.modifyEvent}>
   render(){
     return(
-      <div>
-        <a href="#" onClick={this.modify}>
-          - {this.state.title} | {this.state.startdate} ~ {this.state.enddate}
-        </a>
-      </div>
+      <TableRow onCellClick={this.modify}>
+        <TableRowColumn>{this.state.title}</TableRowColumn>
+        <TableRowColumn>{this.state.startdate}</TableRowColumn>
+        <TableRowColumn>{this.state.enddate}</TableRowColumn>
+      </TableRow>
     )
   }
 }
