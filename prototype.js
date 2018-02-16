@@ -147,7 +147,7 @@ app.get('/admin/dbreset',(req,res)=>{
       .then(()=>{
         return t.none('CREATE TABLE events (eventid serial not null primary key, datestart date,\
           dateend date, title varchar(20), brief varchar(40), description text, image varchar(40),\
-          enabled bool, priority int, link varchar(100), shadecolor varchar(11));')
+          enabled bool, priority int, link varchar(100));')
       })
     }).then(()=>{
       res.json({result:true})

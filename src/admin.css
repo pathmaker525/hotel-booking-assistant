@@ -20,3 +20,13 @@
   background-Color:rgba(0,0,0,0.4);
   padding:50px;
 }
+
+.loginwrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+hr{
+  border:solid 1px black;
+}

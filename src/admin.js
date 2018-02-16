@@ -31,6 +31,7 @@ class AdminAPP extends React.Component {
       userID: "",
       userPW: "",
       stage: 0,
+      showBtnDelete: false,
       modalstate: 0,
       events:[],
       targetEvent:{}
@@ -85,20 +86,14 @@ class AdminAPP extends React.Component {
 
   //parameter 'e' apparently doesn't work
   updateDateStart(e, date){
-    let temp = Object.assign(this.state.targetEvent)
-    temp["datestart"] = date
+    this.state.targetEvent["datestart"] = date
     console.log(date)
-    this.setState({
-      targetEvent:temp
-    })
+    this.forceUpdate()
   }
   updateDateEnd(e, date){
-    let temp = Object.assign(this.state.targetEvent)
-    temp["dateend"] = date
+    this.state.targetEvent["dateend"] = date
     console.log(date)
-    this.setState({
-      targetEvent:temp
-    })
+    this.forceUpdate()
   }
 
   loginAttempt(e) {
@@ -124,7 +119,7 @@ class AdminAPP extends React.Component {
                 userPW:""})
               request.get('/eventJSON')
                       .end((err,data)=>{
-                        this.setState({event:data.body})
+                        this.setState({events:data.body})
                       })
             })
   }
@@ -160,31 +155,36 @@ class AdminAPP extends React.Component {
 
   addEvent(e){
     e.preventDefault()
-    this.setState({stage:2,targetEvent:{
-      eventid:this.state.event.length + 1,
-      title:"",
-      brief:"",
-      description:"",
-      image:"",
-      enabled:true,
-      priority:1,
-      link:"",
-      shadecolor:"",
-      datestart:new Date(),
-      dateend:new Date()
-    }})
+    this.setState({
+      stage:2,
+      showbtnDelete:false,
+      targetEvent:{
+        eventid:this.state.events.length + 1,
+        title:"",
+        brief:"",
+        description:"",
+        image:"",
+        enabled:true,
+        priority:1,
+        link:"",
+        datestart:new Date(),
+        dateend:new Date()
+      }
+    })
     console.log(this.state.targetEvent)
   }
 
   modifyEvent(eventid){
     alert(`이벤트${eventid} 편집합니다`)
     request.get('/admin/eventdetail')
-    .query({
-      eventid:eventid
-    })
+    .query({ eventid:eventid })
     .end((err,data)=>{
       console.log(data.body)
-      this.setState({stage:2,targetEvent:data.body})
+      this.setState({
+        stage:2,
+        targetEvent:data.body,
+        showbtnDelete:true
+      })
     })
   }
 
@@ -202,9 +202,14 @@ class AdminAPP extends React.Component {
     if(this.state.stage === 0){
       return (
       <MuiThemeProvider>
-        <TextField hintText="관리자명" name="userID" onChange={updateValues} /><br />
-        <TextField hintText="비밀번호" floatingLabelText="비밀번호" type="password" name="userPW" onChange={updateValues} onKeyPress={this.keyhandler}/><br />
-        <RaisedButton label="로그인" onClick={loginAttempt} />
+        <div className={styles.loginwrap}>
+          <div>
+            <h3>스텔라마리나 관리자 페이지</h3>
+            <TextField hintText="관리자명" name="userID" onChange={updateValues} /><br />
+            <TextField hintText="비밀번호" floatingLabelText="비밀번호" type="password" name="userPW" onChange={updateValues} onKeyPress={this.keyhandler}/><br />
+            <RaisedButton label="로그인" onClick={loginAttempt} />
+          </div>
+        </div>
       </MuiThemeProvider>
       )
 
@@ -213,11 +218,12 @@ class AdminAPP extends React.Component {
 
       console.log('event json loaded :', this.state.event)
 
-      if(this.state.event){
+      if(this.state.events){
         return (
           <MuiThemeProvider>
           <p>사용자 아이디 : {this.state.userID}</p>
-          <Table>
+          <hr />
+          <Table showRowHover={true}>
             <TableHeader displaySelectAll={false}>
               <TableRow>
                 <TableHeaderColumn>이벤트명</TableHeaderColumn>
@@ -225,14 +231,16 @@ class AdminAPP extends React.Component {
                 <TableHeaderColumn>종료일</TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody showRowHover={true}>
+            <TableBody >
               {
-                this.state.event.map((el,index)=>{
+                this.state.events.map((el,index)=>{
                 return <LiEvent eventid={el.eventid} title={el.title} startdate={el.datestart} enddate={el.dateend} modifyEvent={this.modifyEvent}/>
                 })
               }
             </TableBody>
           </Table>
+          {this.state.events.length <= 0 ? <div>아직 등록된 이벤트가 없습니다</div>  : null }
+          <hr />
           <RaisedButton label="이벤트 새로 추가" onClick={this.addEvent} />
           <RaisedButton label="데이터 전부 초기화" onClick={this.dbreset} />
           <Modal modalstate={this.state.modalstate} closemodal={this.closemodal} acceptmodal1={this.acceptmodal1}/>
@@ -258,8 +266,8 @@ class AdminAPP extends React.Component {
 
           <Toggle label="시행중인 이벤트(해제할 경우 이벤트가 표시되지 않음)" name="enabled" onToggle={this.updateFormToggle} labelPosition="right" toggled={ev.enabled} /> <br />
 
-          <DatePicker hintText="시작일자" name="datestart" value={ev.datestart} onChange={this.updateDateStart} defaultDate={ev.datestart} /> <br />
-          <DatePicker hintText="종료일자" name="dateend" value={ev.dateend} onChange={this.updateDateEnd} defaultDate={ev.dateend} /> <br />
+          <DatePicker floatingLabelText="시작일자" name="datestart" value={ev.datestart} onChange={this.updateDateStart} defaultDate={ev.datestart} /> <br />
+          <DatePicker floatingLabelText="종료일자" name="dateend" value={ev.dateend} onChange={this.updateDateEnd} defaultDate={ev.dateend} /> <br />
           <SelectField floatingLabelText="중요도(표시될 순서)" name="priority" value={ev.priority} onChange={this.updatePriority} autoWidth={true} >
             <MenuItem value={1} primaryText="매우 중요" />
             <MenuItem value={2} primaryText="중요" />
@@ -267,8 +275,9 @@ class AdminAPP extends React.Component {
             <MenuItem value={4} primaryText="안 중요함" />
           </SelectField><br />
           
+          <hr />
           <RaisedButton label="등록(수정)" onClick={this.acceptModify} />
-          <RaisedButton label="삭제" onclick={this.eventDelete} />
+          {this.state.showBtnDelete ? <RaisedButton label="삭제" onclick={this.eventDelete} /> : null }
           <RaisedButton label="취소" onClick={this.resetstage} />
 
         </MuiThemeProvider>
