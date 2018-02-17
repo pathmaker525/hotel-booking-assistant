@@ -18,7 +18,8 @@ import {
   TableHeaderColumn,
   TableRow,
   TableRowColumn,
-} from 'material-ui/Table';
+} from 'material-ui/Table'
+import {Tabs, Tab} from 'material-ui/Tabs'
 
 
 // ------------------------------ parent admin form
@@ -34,7 +35,8 @@ class AdminAPP extends React.Component {
       showBtnDelete: false,
       modalstate: 0,
       events:[],
-      targetEvent:{}
+      targetEvent:{},
+      descriptions:[]
     }
 
     //this function will be bound to 'this' of top parent object(AdminAPP)
@@ -221,29 +223,50 @@ class AdminAPP extends React.Component {
       if(this.state.events){
         return (
           <MuiThemeProvider>
-          <p>사용자 아이디 : {this.state.userID}</p>
+          <p>사용자 아이디 : {this.state.userID}  <RaisedButton label="데이터 전부 초기화" onClick={this.dbreset} /> </p>
           <hr />
-          <Table showRowHover={true}>
-            <TableHeader displaySelectAll={false}>
-              <TableRow>
-                <TableHeaderColumn>이벤트명</TableHeaderColumn>
-                <TableHeaderColumn>시작일</TableHeaderColumn>
-                <TableHeaderColumn>종료일</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody >
-              {
-                this.state.events.map((el,index)=>{
-                return <LiEvent eventid={el.eventid} title={el.title} startdate={el.datestart} enddate={el.dateend} modifyEvent={this.modifyEvent}/>
-                })
-              }
-            </TableBody>
-          </Table>
-          {this.state.events.length <= 0 ? <div>아직 등록된 이벤트가 없습니다</div>  : null }
-          <hr />
-          <RaisedButton label="이벤트 새로 추가" onClick={this.addEvent} />
-          <RaisedButton label="데이터 전부 초기화" onClick={this.dbreset} />
-          <Modal modalstate={this.state.modalstate} closemodal={this.closemodal} acceptmodal1={this.acceptmodal1}/>
+          <Tabs>
+            <Tab label="이벤트 편집">
+              <Table showRowHover={true}>
+                <TableHeader displaySelectAll={false}>
+                  <TableRow>
+                    <TableHeaderColumn>이벤트명</TableHeaderColumn>
+                    <TableHeaderColumn>시작일</TableHeaderColumn>
+                    <TableHeaderColumn>종료일</TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody >
+                  {
+                    this.state.events.map((el,index)=>{
+                    return <LiEvent eventid={el.eventid} title={el.title} startdate={el.datestart} enddate={el.dateend} modifyEvent={this.modifyEvent}/>
+                    })
+                  }
+                </TableBody>
+              </Table>
+              {this.state.events.length <= 0 ? <div>아직 등록된 이벤트가 없습니다</div>  : null }
+              <hr />
+              <RaisedButton label="이벤트 새로 추가" onClick={this.addEvent} />
+            </Tab>
+            <Tab label="각종 설명 페이지 편집">
+              <Table>
+                <TableHeader displaySelectAll={false}>
+                  <TableRow>
+                    <TableHeaderColumn>설명이름</TableHeaderColumn>
+                    <TableHeaderColumn>편집일자</TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody showRowHover={true} >
+                  {
+                    this.state.descriptions.map((el,index)=>{
+                      return <LiDescription />
+                    })
+                  }
+                </TableBody>
+              </Table>
+              {this.state.descriptions.length <= 0 ? <div>아직 등록된 설명이 없습니다</div>  : null }
+            </Tab>
+          </Tabs>
+          <Modal modalstate={this.state.modalstate} closemodal={this.closemodal} acceptmodal1={this.acceptmodal1} />
           </MuiThemeProvider>
         )
       }else{
@@ -360,6 +383,29 @@ class LiEvent extends React.Component{
         <TableRowColumn>{this.state.enddate}</TableRowColumn>
       </TableRow>
     )
+  }
+}
+
+//---------------------------------description list component
+class LiDescription extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      descriptionid:this.props.descriptionid,
+      title:this.props.title,
+      editdate:this.props.editdate
+    }
+    this.modify = this.modify.bind(this)
+  }
+  modify(e){
+    e.preventDefault()
+    this.props.onModify(Math.round(this.state.descriptionid))
+  }
+  render(){
+    <TableRow onCellClick={this.modify}>
+    <TableRowColumn>{this.state.title}</TableRowColumn>
+    <TableRowColumn>{this.state.editdate}</TableRowColumn>
+    </TableRow>
   }
 }
 

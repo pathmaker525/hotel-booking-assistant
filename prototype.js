@@ -159,4 +159,8 @@ app.get('/admin/dbreset',(req,res)=>{
   }
 })
 
+app.post('admin/modify',(req,res)=>{
+  
+})
+
 process.on('unhandledRejection', r => console.log(r)); //error catcher
