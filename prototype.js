@@ -83,16 +83,43 @@ function getIP(req){
 //originally '/eventJSON' renamed to 'queryJSON'
 app.get('/queryJSON', (req,res) => {
   if(req.query.type === "event"){
-    db.any('SELECT * FROM events WHERE datestart <= CURRENT_DATE AND dateend >= CURRENT_DATE\
-      AND enabled = $1 ORDER BY priority;',req.query.showall)
+    let querystring = 'SELECT eventid, title, datestart, dateend, priority, enabled FROM events'
+    if (req.query.showall === false) {querystring += ' WHERE enabled = true AND datestart <= CURRENT_DATE AND dateend >= CURRENT_DATE'}
+    querystring += ' ORDER BY priority;'
+
+    db.any(querystring)
     .then((sqldata)=>{
-      res.send(sqldata)
+      res.json({queryevent:sqldata})
     })
     .catch((err)=>{
-
+      console.log(err)
     })
   }else if(req.query.type === "desc"){
+    db.any('SELECT * FROM descs;')
+    .then((sqldata)=>{
+      res.json({querydesc:sqldata})
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }else if(req.query.type === "eventdetail"){
+    db.one('SELECT * FROM events WHERE eventid = $1;', req.query.targetid)
+    .then((sqldata)=>{
+      res.json({queryeventdetail:sqldata})
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }else if(req.query.type === "descdetail"){
 
+  }else if(req.query.type === "eventlastid"){
+    db.one('SELECT max(eventid) as lastid FROM events;')
+    .then((sqldata)=>{
+      res.json({querylastid:sqldata.lastid})
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
   }
 })
 
@@ -129,20 +156,6 @@ app.get('/admin/login',(req,res)=>{
   if(req.query.userid === "admin" && req.query.userpw ==="1234"){
     res.json({token:propertoken})
   }
-})
-
-app.get('/admin/eventdetail',(req,res)=>{
-  console.log('request event detail: ' + req.query.eventid)
-  db.one('SELECT * FROM events WHERE eventid=$1;',req.query.eventid)
-  .then((eventdata)=>{
-    eventdata.datestart = moment(eventdata.datestart).format('YYYY-MM-DD')
-    eventdata.dateend = moment(eventdata.dateend).format('YYYY-MM-DD')
-    console.log("└", eventdata)
-    res.json(eventdata)
-  })
-  .catch((err)=>{
-    console.log(err)
-  })
 })
 
 app.get('/admin/dbreset',(req,res)=>{
