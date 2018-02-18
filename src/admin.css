@@ -30,3 +30,10 @@
 hr{
   border:solid 1px black;
 }
+
+.nav{
+  background-color:#111D4A;
+  padding:10px;
+  margin:5px;
+  color:white;
+}

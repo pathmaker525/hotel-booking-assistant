@@ -79,15 +79,21 @@ function getIP(req){
   return ip
 }
 
-app.get('/eventJSON', (req,res) => {
-  db.any('SELECT * FROM events WHERE datestart <= CURRENT_DATE AND dateend >= CURRENT_DATE\
-    AND enabled = true ORDER BY priority;')
-  .then((sqldata)=>{
-    res.send(sqldata)
-  })
-  .catch((err)=>{
 
-  })
+//originally '/eventJSON' renamed to 'queryJSON'
+app.get('/queryJSON', (req,res) => {
+  if(req.query.type === "event"){
+    db.any('SELECT * FROM events WHERE datestart <= CURRENT_DATE AND dateend >= CURRENT_DATE\
+      AND enabled = $1 ORDER BY priority;',req.query.showall)
+    .then((sqldata)=>{
+      res.send(sqldata)
+    })
+    .catch((err)=>{
+
+    })
+  }else if(req.query.type === "desc"){
+
+  }
 })
 
 app.get('/', (req,res) => {
@@ -141,9 +147,43 @@ app.get('/admin/eventdetail',(req,res)=>{
 
 app.get('/admin/dbreset',(req,res)=>{
   console.log('db reset attempt: ' + req.query.token)
+  if(validateToken(req.query.token)){
+    db.tx(t1 => {
+      return this.batch([
+        t1.none('DROP TABLE IF EXISTS events;'),
+        t1.none('DROP TABLE IF EXISTS descriptions;'),
+        t1.tx(t2=>{
+          return this.batch([
+
+            t2.none('CREATE TABLE events (eventid serial not null primary key,\
+              datestart date,\
+              dateend date,\
+              title varchar(20),\
+              brief varchar(40),\
+              description text,\
+              image varchar(40),\
+              enabled bool,\
+              priority int,\
+              link varchar(100));'),
+
+            t2.none('CREATE TABLE descs (descid serial not null primary key,\
+              title varchar(100),\
+              context text,\
+              dateedit date);')
+          ])
+        })
+      ])
+    }).then(()=>{
+      res.json({result:true})
+    }).catch(err=>{
+      console.log(err)
+      res.json({result:false})
+    })
+  }
+  /*
   if(validateToken(propertoken)){
     db.task( t => {
-      return t.none('DROP TABLE IF EXISTS events;') // this won't have any consequence if the table doesn't exist
+      return t.none('DROP TABLE IF EXISTS events;DROP TABLE IF EXISTS descriptions;') // this won't have any consequence if the table doesn't exist
       .then(()=>{
         return t.none('CREATE TABLE events (eventid serial not null primary key, datestart date,\
           dateend date, title varchar(20), brief varchar(40), description text, image varchar(40),\
@@ -156,7 +196,7 @@ app.get('/admin/dbreset',(req,res)=>{
     })
   }else{
     res.json({result:false})
-  }
+  }*/
 })
 
 app.post('admin/modify',(req,res)=>{
