@@ -25,7 +25,8 @@
         },1000);
       }
 
-      $.getJSON('/eventJSON',(dataEvent) => {
+      $.getJSON('/queryJSON',{type:'eventmain'},(dataEvent) => {
+        console.log(dataEvent);
         if(dataEvent.length === 0){
           $('#currentEvent').html("<p>현재 진행중인 이벤트가 없습니다.</p>")
         }else if(dataEvent){

@@ -111,11 +111,32 @@ app.get('/queryJSON', (req,res) => {
       console.log(err)
     })
   }else if(req.query.type === "descdetail"){
-
+    let searchtarget = 'targetid'
+    let searchtarget2 = req.query.targetid
+    if(req.query.targetname){
+      searchtarget = 'title'
+      searchtarget2 = req.query.targetname
+    }
+    db.any('SELECT * FROM events WHERE ' + searchtarget +' = $1;', seearchtarget2)
+    .then((sqldata)=>{
+      res.json({ /*return data from here */})
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
   }else if(req.query.type === "eventlastid"){
     db.one('SELECT max(eventid) as lastid FROM events;')
     .then((sqldata)=>{
       res.json({querylastid:sqldata.lastid})
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }else if(req.query.type === "eventmain"){
+    //TODO : send over data to main page ejs file
+    db.any('SELECT * FROM events WHERE enabled = true AND datestart <= CURRENT_DATE AND dateend >= CURRENT_DATE;')
+    .then((sqldata)=>{
+      res.json(sqldata)
     })
     .catch((err)=>{
       console.log(err)
