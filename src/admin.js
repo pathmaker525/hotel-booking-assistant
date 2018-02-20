@@ -276,7 +276,7 @@ class AdminControl extends React.Component {
         {/* ------------------------description list-----------------------------  */}
 
         <Tab label="페이지 내용 편집" data-type="desc" onActive={this.handleTabActive}>
-          <Table selectable={false}>
+          <Table selectable={false} onCellClick={this.activeModifyDesc}>
             <TableHeader displaySelectAll={false}>
               <TableRow>
                 <TableHeaderColumn>설명 이름</TableHeaderColumn>
@@ -288,7 +288,7 @@ class AdminControl extends React.Component {
               {this.state.descs.map((row,index) => (
                 <TableRow key={index}>
                   <TableRowColumn>{row.title}</TableRowColumn>
-                  <TableRowColumn>{row.context.slice(0,10)}...</TableRowColumn>
+                  <TableRowColumn>{row.context.slice(0,20)}...</TableRowColumn>
                   <TableRowColumn>{moment(row.dateedit).format('YYYY-MM-DD')}</TableRowColumn>
                 </TableRow>
               ))}
@@ -322,6 +322,8 @@ class ModifyEvent extends React.Component {
 
     this.sendBack = this.sendBack.bind(this)
 
+    this.confirmWrite = this.confirmWrite.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
   componentDidMount(){
@@ -385,6 +387,49 @@ class ModifyEvent extends React.Component {
     this.forceUpdate()
   }
 
+  confirmWrite(){
+    this.state.eventdata.datestart = moment(this.state.eventdata.datestart).format('YYYY-MM-DD')
+    this.state.eventdata.dateend = moment(this.state.eventdata.dateend).format('YYYY-MM-DD')
+    console.log('try modify data', {targetid:this.props.targetid,type:'event',createnew:this.props.createnew,token:this.props.token,
+  eventdata:this.state.eventdata})
+    request.get('/modifydata')
+    .query({
+      targetid:this.props.targetid,
+      type:'event',
+      createnew:this.props.createnew,
+      token:this.props.token,
+      eventdata:this.state.eventdata
+    })
+    .end((err,data)=>{
+      if(data.body.result){
+        alert('성공적으로 내용을 추가/갱신하였습니다')
+      }
+    })
+    this.setState({goback:true})
+  }
+
+  delete(){
+    request.get('/deleteevent')
+    .query({
+      targetid:this.props.targetid,
+      token:this.props.token
+    })
+    .end((err,data)=>{
+      if(data.body.result){
+        alert('성공적으로 내용을 삭제했습니다')
+      }
+    })
+    this.setState({goback:true})
+  }
+
+  _postimage(imgfile){
+    console.log(imgfile)
+    request.post('/postimage')
+    .end((err,data)=>{
+      alert('성공적으로 이미지가 업로드 되었습니다')
+    })
+  }
+
   render(){
     const updateFormValues = e =>this.updateFormValues(e)
     return (
@@ -395,9 +440,8 @@ class ModifyEvent extends React.Component {
           <TextField floatingLabelText="짧은 설명" value={this.state.eventdata.brief} onChange={updateFormValues} name="brief" fullWidth={true} /><br />
           <TextField floatingLabelText="관련 웹페이지 주소" value={this.state.eventdata.link} onChange={updateFormValues} name="link" fullWidth={true} /><br />
           <TextField floatingLabelText="상세 설명(여러줄 입력 가능)" value={this.state.eventdata.description} onChange={updateFormValues} name="description" multiLine={true} fullWidth={true} /> <br/>
-
+          <ImageUpload postimage={this._postimage}/>
           <Toggle label="이벤트 표시(활성화)" name="enabled" onToggle={this.updateFormToggle} labelPosition="right" toggled={this.state.eventdata.enabled} /> <br />
-
           <DatePicker floatingLabelText="시작일자" name="datestart" value={new Date(moment(this.state.eventdata.datestart).format('YYYY-MM-DD'))} onChange={this.updateDateStart}  /> <br />
           <DatePicker floatingLabelText="종료일자" name="dateend" value={new Date(moment(this.state.eventdata.dateend).format('YYYY-MM-DD'))} onChange={this.updateDateEnd}  /> <br />
           <SelectField floatingLabelText="중요도(표시될 순서)" name="priority" value={this.state.eventdata.priority} onChange={this.updatePriority} autoWidth={true} >
@@ -407,7 +451,7 @@ class ModifyEvent extends React.Component {
             <MenuItem value={4} primaryText="안 중요함" />
           </SelectField><br />
         <hr />
-        <RaisedButton label={this.props.createnew ? "등록" : "수정"} />
+        <RaisedButton label={this.props.createnew ? "등록" : "수정"} onClick={this.confirmWrite} />
         {this.props.createnew ? null : <RaisedButton label="삭제" onClick={this.delete}/> }
         <RaisedButton label="취소" onClick={this.sendBack}/>
         {this.state.goback ? <Redirect to="/admin/control" /> : null }
@@ -416,19 +460,119 @@ class ModifyEvent extends React.Component {
   }
 }
 
+//-------------------- image upload component
+class ImageUpload extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {file: '',imagePreviewUrl: ''};
+    this._handleSubmit = this._handleSubmit.bind(this)
+  }
+
+  _handleSubmit(e) {
+    e.preventDefault();
+    // TODO: do something with -> this.state.file
+    //console.log('handle uploading-', this.state.file);
+    this.props.postimage(this.state.file)
+  }
+
+  _handleImageChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        file: file,
+        imagePreviewUrl: reader.result
+      });
+    }
+
+    reader.readAsDataURL(file)
+  }
+
+  render() {
+    let {imagePreviewUrl} = this.state;
+    let $imagePreview = null;
+    if (imagePreviewUrl) {
+      $imagePreview = (<img src={imagePreviewUrl} />);
+    } else {
+      $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
+    }
+
+    return (
+      <div className="previewComponent">
+        <form onSubmit={(e)=>this._handleSubmit(e)}>
+          <input className="fileInput" 
+            type="file" 
+            onChange={(e)=>this._handleImageChange(e)} />
+          <button className="submitButton" 
+            type="submit" 
+            onClick={(e)=>this._handleSubmit(e)}>Upload Image</button>
+        </form>
+        <div className="imgPreview">
+          {$imagePreview}
+        </div>
+      </div>
+    )
+  }
+}
+  
+
 //------------------- description edit page
 class ModifyDesc extends React.Component {
   constructor(props){
     super(props)
     this.state={
       goback:false,
-      descdata:{}
+      descdata:{
+        title:"",
+        context:"",
+        dateedit:moment()
+      }
     }
     this.sendBack = this.sendBack.bind(this)
+    this.updateDescContext = this.updateDescContext.bind(this)
+    this.confirmModify = this.confirmModify.bind(this)
   }
 
   sendBack(e){
     e.preventDefault()
+    this.setState({goback:true})
+  }
+
+  componentDidMount(){
+    console.log('loading up details...')
+    request.get('/queryJSON')
+    .query({
+      type:"descdetail",
+      targetid:this.props.targetid
+    })
+    .end((err,data)=>{
+      console.log("detail data fetch completed:",data.body.querydescdetail)
+      this.setState({descdata:data.body.querydescdetail})
+    })
+  }
+
+  updateDescContext(e){
+    this.state.descdata.context = e.target.value
+    this.forceUpdate()
+  }
+
+  confirmModify(){
+    this.state.descdata.dateedit = moment().format('YYYY-MM-DD')
+    request.get('/modifydata')
+    .query({
+      targetid:this.props.targetid,
+      type:'desc',
+      token:this.props.token,
+      descdata:this.state.descdata
+    })
+    .end((err,data)=>{
+      if(data.body.result){
+        alert('성공적으로 내용을 추가/갱신하였습니다')
+      }
+    })
     this.setState({goback:true})
   }
 
@@ -437,7 +581,11 @@ class ModifyDesc extends React.Component {
       <div>
         편집중인 설명문 번호: {this.props.targetid}
         <hr />
+          <div>{this.state.descdata.title}</div>
+          <div>최종 편집일자: {moment(this.state.descdata.dateedit).format('YYYY-MM-DD')}</div>
+          <TextField floatingLabelText="내용" value={this.state.descdata.context} onChange={this.updateDescContext} multiLine={true} fullWidth={true} />
         <hr />
+        <RaisedButton label="수정" onClick={this.confirmModify} />
         {this.state.goback ? <Redirect to="/admin/control" /> : null }
         <RaisedButton label="취소" onClick={this.sendBack}/>
       </div>

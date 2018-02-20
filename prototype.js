@@ -84,7 +84,7 @@ function getIP(req){
 app.get('/queryJSON', (req,res) => {
   if(req.query.type === "event"){
     let querystring = 'SELECT eventid, title, datestart, dateend, priority, enabled FROM events'
-    if (req.query.showall === false) {querystring += ' WHERE enabled = true AND datestart <= CURRENT_DATE AND dateend >= CURRENT_DATE'}
+    if (req.query.showall === "false") {querystring += ' WHERE enabled = true AND datestart <= CURRENT_DATE AND dateend >= CURRENT_DATE'}
     querystring += ' ORDER BY priority;'
 
     db.any(querystring)
@@ -111,15 +111,15 @@ app.get('/queryJSON', (req,res) => {
       console.log(err)
     })
   }else if(req.query.type === "descdetail"){
-    let searchtarget = 'targetid'
+    let searchtarget = 'descid'
     let searchtarget2 = req.query.targetid
     if(req.query.targetname){
       searchtarget = 'title'
       searchtarget2 = req.query.targetname
     }
-    db.any('SELECT * FROM events WHERE ' + searchtarget +' = $1;', seearchtarget2)
+    db.one('SELECT * FROM descs WHERE ' + searchtarget +' = $1;', searchtarget2)
     .then((sqldata)=>{
-      res.json({ /*return data from here */})
+      res.json({querydescdetail:sqldata})
     })
     .catch((err)=>{
       console.log(err)
@@ -233,8 +233,70 @@ app.get('/admin/dbreset',(req,res)=>{
   }*/
 })
 
-app.post('admin/modify',(req,res)=>{
-  
+app.post('/postimage',(req,res)=>{
+  uploader.single(req.query.file)
+  if(req.file.mimetype == 'image/png' || req.file.mimetype =='image/jpeg'){
+    res.json({result:true})
+  }else{
+    res.json({result:false})
+  }
+})
+
+//change every upload to 'post' --> query is not safe for transaction
+//return status 204 after finishing the action so that the browser doesn't hang
+app.get('/modifydata',(req,res)=>{
+  if(validateToken(req.query.token)){
+    if(req.query.type === 'event'){
+      if(req.query.createnew === 'true'){
+        const ed = req.query.eventdata
+        db.none('INSERT INTO events \
+        (eventid, datestart, dateend, title, brief, description, image, enabled, priority, link) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);',[
+          req.query.targetid, ed.datestart, ed.dateend, ed.title, ed.brief, ed.description, ed.image, ed.enabled, ed.priority, ed.link
+        ])
+        .then(()=>{
+          res.json({result:true})
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      }else{
+        const ed = req.query.eventdata
+        db.none('UPDATE events SET datestart=$1, dateend=$2, title=$3, brief=$4, description=$5, image=$6, enabled=$7, priority=$8, link=$9 WHERE eventid=$10;',[
+          ed.datestart, ed.dateend, ed.title, ed.brief, ed.description, ed.image, ed.enabled, ed.priority, ed.link, req.query.targetid
+        ])
+        .then(()=>{
+          res.json({result:true})
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      }
+    }else if(req.query.type === "desc"){
+      const dd = req.query.descdata
+      db.none('UPDATE descs SET context=$1, dateedit=CURRENT_DATE WHERE descid=$2;',[dd.context,req.query.targetid])
+      .then(()=>{
+        res.json({result:true})
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    }
+  }else{
+    console.log("wrong token! --- modification rejected")
+    res.json({result:false})
+  }
+})
+
+app.get('/deleteevent',(req,res)=>{
+  if(validateToken(req.query.token)){
+    db.none('DELETE FROM events WHERE eventid=$1;',req.query.targetid)
+    .then(()=>{
+      res.json({result:true})
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
 })
 
 process.on('unhandledRejection', r => console.log(r)); //error catcher
