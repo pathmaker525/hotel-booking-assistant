@@ -233,8 +233,7 @@ app.get('/admin/dbreset',(req,res)=>{
   }*/
 })
 
-app.post('/postimage',(req,res)=>{
-  uploader.single(req.query.file)
+app.post('/postimage',  uploader.single('image'),(req,res)=>{
   if(req.file.mimetype == 'image/png' || req.file.mimetype =='image/jpeg'){
     res.json({result:true})
   }else{

@@ -423,11 +423,24 @@ class ModifyEvent extends React.Component {
   }
 
   _postimage(imgfile){
-    console.log(imgfile)
+    let _formData = new FormData()
+    _formData.append('image',imgfile)
+    fetch('/postimage',{
+      method:'POST',
+      body: _formData
+    })
+    .then((res)=>{
+
+    })
+    .catch((err)=>{
+
+    })
+    /*
     request.post('/postimage')
     .end((err,data)=>{
       alert('성공적으로 이미지가 업로드 되었습니다')
     })
+    */
   }
 
   render(){
