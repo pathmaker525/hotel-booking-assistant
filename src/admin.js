@@ -21,6 +21,9 @@ import {
   TableRowColumn,
 } from 'material-ui/Table'
 import {Tabs, Tab} from 'material-ui/Tabs'
+import { resolve } from 'path';
+
+import ModifyDesc from './modifydesc'
 
 // -------------------------------- Main Page
 class AdminApp extends React.Component {
@@ -169,6 +172,7 @@ class AdminControl extends React.Component {
     this.activeModifyEvent = this.activeModifyEvent.bind(this)
     this.activeModifyDesc = this.activeModifyDesc.bind(this)
     this.createEvent = this.createEvent.bind(this)
+    this.dbreset = this.dbreset.bind(this)
 
     this.updateEvent()
   }
@@ -237,8 +241,21 @@ class AdminControl extends React.Component {
     })
   }
 
+  dbreset(e){
+    e.preventDefault()
+    request.get('/dbreset')
+    .query({
+      token:this.props.token
+    })
+    .end((err,data)=>{
+      console.log('db has been reset')
+      this.forceUpdate();
+    })
+  }
+
   render(){
     return (
+      <div>
       <Tabs>
 
         {/* ---------------------event and promotion list-----------------------  */}
@@ -295,12 +312,12 @@ class AdminControl extends React.Component {
             </TableBody>
           </Table>
         </Tab>
-        <RaisedButton label="모든 내용 초기화하기" />
-        {this.state.modify === 1 ? <Redirect to="/admin/modifyevent" /> : null }
-        {this.state.modify === 2 ? <Redirect to="/admin/modifydesc" /> : null }
-        {this.state.modify === 3 ? <Redirect to="/admin/createevent" /> : null }
       </Tabs>
-
+      {this.state.modify === 1 ? <Redirect to="/admin/modifyevent" /> : null }
+      {this.state.modify === 2 ? <Redirect to="/admin/modifydesc" /> : null }
+      {this.state.modify === 3 ? <Redirect to="/admin/createevent" /> : null }
+      <RaisedButton label="모든 내용 초기화하기" onClick={this.dbreset} />
+      </div>
     )
   }
 }
@@ -311,7 +328,8 @@ class ModifyEvent extends React.Component {
     super(props)
     this.state={
       goback:false,
-      eventdata:{}
+      eventdata:{},
+      imagedata:""
     }
 
     this.updateFormValues = this.updateFormValues.bind(this)
@@ -323,6 +341,7 @@ class ModifyEvent extends React.Component {
     this.sendBack = this.sendBack.bind(this)
 
     this.confirmWrite = this.confirmWrite.bind(this)
+    this._postimage = this._postimage.bind(this)
     this.delete = this.delete.bind(this)
   }
 
@@ -391,21 +410,51 @@ class ModifyEvent extends React.Component {
     this.state.eventdata.datestart = moment(this.state.eventdata.datestart).format('YYYY-MM-DD')
     this.state.eventdata.dateend = moment(this.state.eventdata.dateend).format('YYYY-MM-DD')
     console.log('try modify data', {targetid:this.props.targetid,type:'event',createnew:this.props.createnew,token:this.props.token,
-  eventdata:this.state.eventdata})
-    request.get('/modifydata')
-    .query({
+                eventdata:this.state.eventdata})
+    let _frmImage = new FormData()
+    _frmImage.append('image',this.state.imagedata)
+    
+    const params={
       targetid:this.props.targetid,
       type:'event',
       createnew:this.props.createnew,
-      token:this.props.token,
-      eventdata:this.state.eventdata
-    })
-    .end((err,data)=>{
-      if(data.body.result){
-        alert('성공적으로 내용을 추가/갱신하였습니다')
-      }
-    })
-    this.setState({goback:true})
+      token:this.props.token
+    }
+    const esc = encodeURIComponent
+    let query = Object.keys(params)
+    .map(k => esc(k) + '=' + esc(params[k]))
+    .join('&')
+
+    if(this.state.imagedata){
+      console.log('uploading image')
+      fetch('/postimage?token=' + this.props.token, {
+        method:'POST',
+        body: _frmImage
+      })
+      .then((res)=>{
+        this.state.eventdata.image = res
+        fetch('/modifydata?' + query ,{
+          method:'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(this.state.eventdata)
+        })
+        .then((res)=>{
+          this.setState({goback:true})
+        })
+        .catch((err)=>{        })
+      })
+      .catch((err)=>{    })
+    }else{
+      fetch('/modifydata?' + query ,{
+        method:'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(this.state.eventdata)
+      })
+      .then((res)=>{
+        this.setState({goback:true})
+      })
+      .catch((err)=>{    })
+    }
   }
 
   delete(){
@@ -417,30 +466,13 @@ class ModifyEvent extends React.Component {
     .end((err,data)=>{
       if(data.body.result){
         alert('성공적으로 내용을 삭제했습니다')
+        this.setState({goback:true})
       }
     })
-    this.setState({goback:true})
   }
 
   _postimage(imgfile){
-    let _formData = new FormData()
-    _formData.append('image',imgfile)
-    fetch('/postimage',{
-      method:'POST',
-      body: _formData
-    })
-    .then((res)=>{
-
-    })
-    .catch((err)=>{
-
-    })
-    /*
-    request.post('/postimage')
-    .end((err,data)=>{
-      alert('성공적으로 이미지가 업로드 되었습니다')
-    })
-    */
+    this.setState({imagedata:imgfile})
   }
 
   render(){
@@ -531,79 +563,5 @@ class ImageUpload extends React.Component {
   }
 }
   
-
-//------------------- description edit page
-class ModifyDesc extends React.Component {
-  constructor(props){
-    super(props)
-    this.state={
-      goback:false,
-      descdata:{
-        title:"",
-        context:"",
-        dateedit:moment()
-      }
-    }
-    this.sendBack = this.sendBack.bind(this)
-    this.updateDescContext = this.updateDescContext.bind(this)
-    this.confirmModify = this.confirmModify.bind(this)
-  }
-
-  sendBack(e){
-    e.preventDefault()
-    this.setState({goback:true})
-  }
-
-  componentDidMount(){
-    console.log('loading up details...')
-    request.get('/queryJSON')
-    .query({
-      type:"descdetail",
-      targetid:this.props.targetid
-    })
-    .end((err,data)=>{
-      console.log("detail data fetch completed:",data.body.querydescdetail)
-      this.setState({descdata:data.body.querydescdetail})
-    })
-  }
-
-  updateDescContext(e){
-    this.state.descdata.context = e.target.value
-    this.forceUpdate()
-  }
-
-  confirmModify(){
-    this.state.descdata.dateedit = moment().format('YYYY-MM-DD')
-    request.get('/modifydata')
-    .query({
-      targetid:this.props.targetid,
-      type:'desc',
-      token:this.props.token,
-      descdata:this.state.descdata
-    })
-    .end((err,data)=>{
-      if(data.body.result){
-        alert('성공적으로 내용을 추가/갱신하였습니다')
-      }
-    })
-    this.setState({goback:true})
-  }
-
-  render(){
-    return (
-      <div>
-        편집중인 설명문 번호: {this.props.targetid}
-        <hr />
-          <div>{this.state.descdata.title}</div>
-          <div>최종 편집일자: {moment(this.state.descdata.dateedit).format('YYYY-MM-DD')}</div>
-          <TextField floatingLabelText="내용" value={this.state.descdata.context} onChange={this.updateDescContext} multiLine={true} fullWidth={true} />
-        <hr />
-        <RaisedButton label="수정" onClick={this.confirmModify} />
-        {this.state.goback ? <Redirect to="/admin/control" /> : null }
-        <RaisedButton label="취소" onClick={this.sendBack}/>
-      </div>
-    )
-  }
-}
 
 ReactDOM.render(<AdminApp />,document.getElementById('root'))

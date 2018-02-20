@@ -179,15 +179,15 @@ app.get('/admin/login',(req,res)=>{
   }
 })
 
-app.get('/admin/dbreset',(req,res)=>{
+app.get('/dbreset',(req,res)=>{
   console.log('db reset attempt: ' + req.query.token)
   if(validateToken(req.query.token)){
     db.tx(t1 => {
-      return this.batch([
+      return t1.batch([
         t1.none('DROP TABLE IF EXISTS events;'),
-        t1.none('DROP TABLE IF EXISTS descriptions;'),
+        t1.none('DROP TABLE IF EXISTS descs;'),
         t1.tx(t2=>{
-          return this.batch([
+          return t2.batch([
 
             t2.none('CREATE TABLE events (eventid serial not null primary key,\
               datestart date,\
@@ -233,48 +233,51 @@ app.get('/admin/dbreset',(req,res)=>{
   }*/
 })
 
-app.post('/postimage',  uploader.single('image'),(req,res)=>{
-  if(req.file.mimetype == 'image/png' || req.file.mimetype =='image/jpeg'){
-    res.json({result:true})
-  }else{
-    res.json({result:false})
+app.post('/postimage',uploader.single('image'),(req,res)=>{
+  console.log('image upload request')
+  if(validateToken(req.query.token)){
+    if(req.file.mimetype == 'image/png' || req.file.mimetype =='image/jpeg'){
+      res.status(200).json({result:true,imageurl:req.file.filename})
+    }else{
+      res.status(200).json({result:false})
+    }
   }
 })
 
 //change every upload to 'post' --> query is not safe for transaction
-//return status 204 after finishing the action so that the browser doesn't hang
-app.get('/modifydata',(req,res)=>{
+//return status after finishing the action --> 200:ok, 204:empty but ok, 400:bad request
+app.post('/modifydata',(req,res)=>{
   if(validateToken(req.query.token)){
     if(req.query.type === 'event'){
       if(req.query.createnew === 'true'){
-        const ed = req.query.eventdata
+        const ed = req.body
         db.none('INSERT INTO events \
         (eventid, datestart, dateend, title, brief, description, image, enabled, priority, link) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);',[
           req.query.targetid, ed.datestart, ed.dateend, ed.title, ed.brief, ed.description, ed.image, ed.enabled, ed.priority, ed.link
         ])
         .then(()=>{
-          res.json({result:true})
+          //send status so that the browser won't hang
+          res.status(200).json({result:true})
         })
         .catch((err)=>{
           console.log(err)
         })
       }else{
-        const ed = req.query.eventdata
+        const ed = req.body
         db.none('UPDATE events SET datestart=$1, dateend=$2, title=$3, brief=$4, description=$5, image=$6, enabled=$7, priority=$8, link=$9 WHERE eventid=$10;',[
           ed.datestart, ed.dateend, ed.title, ed.brief, ed.description, ed.image, ed.enabled, ed.priority, ed.link, req.query.targetid
         ])
         .then(()=>{
-          res.json({result:true})
+          res.status(200).json({result:true})
         })
         .catch((err)=>{
           console.log(err)
         })
       }
     }else if(req.query.type === "desc"){
-      const dd = req.query.descdata
-      db.none('UPDATE descs SET context=$1, dateedit=CURRENT_DATE WHERE descid=$2;',[dd.context,req.query.targetid])
+      db.none('UPDATE descs SET context=$1, dateedit=CURRENT_DATE WHERE descid=$2;',[req.body.context,req.query.targetid])
       .then(()=>{
-        res.json({result:true})
+        res.status(200).json({result:true})
       })
       .catch((err)=>{
         console.log(err)
