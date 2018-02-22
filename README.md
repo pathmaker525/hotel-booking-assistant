@@ -5,6 +5,6 @@
 - Node.js
 - PostgreSQL(pg-promise)
 - express/ejs
-- react(admin page === SPA)
+- react(admin page === SPA + react-route + material-ui)
 - webpack
 - babel
