@@ -19,28 +19,26 @@ a:hover:after {
   width: 100%;
 }
 a:hover{
-  color:black;
+  color:#3366FF;
 }
 .navBar ul{
   list-style-type:none;
-  padding-left: 60px;
-}
-.navBar li{
-  display:inline;
-  display: inline-block;
-  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:900px;
 }
 .navBar{
   display:flex;
   justify-content:center;
   width:100%;
+  height:70px;
   transition:background-color 500ms;
 }
 .navReserv{
   background-color:black;
   color:white;
-  padding:7px;
-  letter-spacing:5px;
+  padding:25px;
 }
 .navReserv:hover{
   background-color:orange;
@@ -162,7 +160,7 @@ body{
   transform:translateX(-50%),translateY(-50%);
   z-index:-100;
   
-  background-color: lightgray;
+  background-color: gray;
   background-blend-mode: multiply;
 }
 
@@ -183,21 +181,22 @@ body{
 }
 
 .conDesc{
+  width:100%;
   display:flex;
   justify-content:center;
 }
+
+
 .picUnderDesc{
-  width:1000px;
-  height:600px;
   background-image:url("https://images.trvl-media.com/hotels/10000000/9400000/9395100/9395058/9395058_41_z.jpg");
+  height:500px;
+  background-size:cover;
+  background-position:center;
 }
 .descOverPic{
+  max-width:500px;
   margin-top:50px;
-  margin-right:-100px;
-  float:right;
   background-color:#F2F2F2;
-  width:500px;
-  height:450px;
   padding:30px;
   text-align:left;
 }
@@ -272,15 +271,37 @@ body{
 #btnNav{
   position:fixed;
   z-index:100;
-  background-color:rgba(0,0,0,0);
+  background-color:#3366FF;
   border:none;
   font-size:30px;
   color:white;
+  opacity: 0.4;
+  top:10px;
+  left:10px;
+  width:50px;
+  height:50px;
+  border-radius:30px;
+  box-shadow:2px 2px 2px rgba(0,0,0,0.4);
+  transition:0.5s ease-in-out;
+}
+
+#btnNav:hover{
+  transition:0.5s ease-in-out;
+  opacity:1;
+}
+
+#btnNav:active{
+  opacity:1;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 @media only screen and (max-width: 900px) {
   .navBar {
     display:none;
+  }
+  .titleWelcome{
+    margin-top:50px;
   }
 }
 
