@@ -1,0 +1,291 @@
+/* @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); */
+
+a{
+  text-decoration:none;
+  color:white;
+  transition:200ms;
+  position: relative;
+}
+a:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  border-bottom: 2px solid #3366FF;
+  transition: 0.4s;
+}
+a:hover:after {
+  width: 100%;
+}
+a:hover{
+  color:black;
+}
+.navBar ul{
+  list-style-type:none;
+  padding-left: 60px;
+}
+.navBar li{
+  display:inline;
+  display: inline-block;
+  padding:20px;
+}
+.navBar{
+  display:flex;
+  justify-content:center;
+  width:100%;
+  transition:background-color 500ms;
+}
+.navReserv{
+  background-color:black;
+  color:white;
+  padding:7px;
+  letter-spacing:5px;
+}
+.navReserv:hover{
+  background-color:orange;
+  color:#222;
+}
+.navLogo{
+  font-weight:500;
+  font-size:20px;
+}
+
+.fixedDisp{
+  position:fixed;
+  width:100%;
+  z-index:99;
+}
+
+.titleWelcome{
+  text-align:center;
+  color:white;
+  text-shadow:2px 2px 2px rgba(0,0,0,0.4);
+}
+.titleWelcome hr{
+  border:solid 0.5px white;
+  width:300px;
+}
+
+.scrolled a:hover {
+  color:#3366FF;
+}
+.scrolled .navReserv:hover{
+  color:#222;
+}
+.scrolled{
+  color:black;
+  background-color:white;
+}
+.scrolled2{
+  color:black;
+  background-color:white;
+  display:flex;
+  justify-content:center;
+}
+.scrolledshadow{
+  box-shadow:0px 1px 2px rgba(0,0,0,0.2);
+}
+
+.middleVoid{
+  height:400px;
+}
+
+.downWelcome{
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  color:white;
+  height:768px; /* recommended size for desktop 1366x768 */
+  width:100%;
+}
+.downWelcome p{
+  padding:0;
+  margin:0;
+  border:0;
+}
+.downWelcome h1{
+  padding:0;
+  margin:0;
+  border:0;
+}
+
+.downM{
+  text-align:center;
+}
+
+body{
+  border:0;
+  margin:0;
+  font-family:"Noto Sans KR";
+}
+@keyframes BGzoom {
+  0% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    opacity:0;
+  }
+  2%{
+    opacity:1;
+  }
+  97%{
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+    transform: scale(1.5);
+    -webkit-transform: scale(1.5);
+    -ms-transform:scale (1.5);
+    -moz-transform: scale(1.5);
+    -o-transform: scale(1.5);
+  }
+}
+.animBack{
+  /* for animation keyframes, use '0s' instead of '0' when writing delays*/
+  animation:BGzoom 35s linear 0s infinite;
+  -webkit-animation:BGzoom 35s linear 0s infinite;
+  -mos-animation:BGzoom 35s linear 0s infinite;
+  -ms-animation:BGzoom 35s linear 0s infinite;
+  -o-animation:BGzoom 35s linear 0s infinite;
+}
+
+#divBack{
+  background-image:url('https://cdn4.hotelopia.com/giata/bigger/41/415419/415419a_hb_a_008.jpg');
+  background-size:cover;
+  display:block;
+  position:fixed;
+  width:100%;
+  height:100%;
+  transform:translateX(-50%),translateY(-50%);
+  z-index:-100;
+  
+  background-color: lightgray;
+  background-blend-mode: multiply;
+}
+
+.content{
+  padding-top:50px;
+  background:white;
+  text-align:center;
+  margin-bottom:0;
+  padding-bottom:50px;
+}
+
+.boxDesc{
+  margin:20px;
+  padding:50px;
+  background-color:#F2F2F2;
+  color:#393D3F;
+  font-weight:300;
+}
+
+.conDesc{
+  display:flex;
+  justify-content:center;
+}
+.picUnderDesc{
+  width:1000px;
+  height:600px;
+  background-image:url("https://images.trvl-media.com/hotels/10000000/9400000/9395100/9395058/9395058_41_z.jpg");
+}
+.descOverPic{
+  margin-top:50px;
+  margin-right:-100px;
+  float:right;
+  background-color:#F2F2F2;
+  width:500px;
+  height:450px;
+  padding:30px;
+  text-align:left;
+}
+.descOverPic hr{
+  border:solid 0.5px #222;
+}
+.descOverPic h1{
+  margin:0;
+  padding:0;
+}
+
+.footer{
+  text-align:center;
+  margin-top:0px;
+  padding-top:20px;
+  padding-bottom:20px;
+  background-color:#393D3F;
+  color:#F2F2F2;
+}
+.footer p{
+  margin:0;
+  border:0;
+  padding:0;
+}
+
+
+/* for side nav effect */
+/* The side navigation menu */
+.sidenav {
+    position:fixed;
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 101; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #111; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left .5s;
+}
+
+#btnNav{
+  position:fixed;
+  z-index:100;
+  background-color:rgba(0,0,0,0);
+  border:none;
+  font-size:30px;
+  color:white;
+}
+
+@media only screen and (max-width: 900px) {
+  .navBar {
+    display:none;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  #btnNav {
+    display:none;
+  }
+}

@@ -1,0 +1,151 @@
+/* @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); */
+
+a{
+  text-decoration:none;
+  color:black;
+  transition:200ms;
+  position: relative;
+}
+a:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  border-bottom: 2px solid #3366FF;
+  transition: 0.4s;
+}
+a:hover:after {
+  width: 100%;
+}
+a:hover{
+  color:#3366FF;
+}
+.navBar ul{
+  list-style-type:none;
+  padding-left: 60px;
+}
+.navBar li{
+  display:inline;
+  display: inline-block;
+  padding:10px;
+}
+.navBar{
+  display:flex;
+  justify-content:center;
+  width:100%;
+  transition:background-color 500ms;
+  box-shadow:0px 1px 2px rgba(0,0,0,0.2);
+}
+.navReserv{
+  background-color:black;
+  color:white;
+  padding:7px;
+  letter-spacing:5px;
+}
+.navReserv:hover{
+  background-color:orange;
+  color:#222;
+}
+.navLogo{
+  font-weight:500;
+  font-size:20px;
+}
+
+.fixedDisp{
+  position:fixed;
+  width:100%;
+  z-index:99;
+}
+
+.middleVoid{
+  height:400px;
+}
+
+/* recommended size for desktop 1366x768 */
+body{
+  border:0;
+  margin:0;
+  font-family:"Noto Sans KR";
+}
+
+.content{
+  padding-top:50px;
+  background:white;
+  text-align:center;
+  margin-bottom:0;
+  padding-bottom:50px;
+}
+
+
+/* for side nav effect */
+/* The side navigation menu */
+.sidenav {
+    position:fixed;
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 101; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #111; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left .5s;
+}
+
+#btnNav{
+  position:fixed;
+  z-index:100;
+  background-color:#3366FF;
+  border:none;
+  font-size:30px;
+  color:white;
+  opacity: 0.5;
+  top:10px;
+  left:10px;
+  width:50px;
+  height:50px;
+  border-radius:30px;
+}
+
+@media only screen and (max-width: 900px) {
+  .navBar {
+    display:none;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  #btnNav {
+    display:none;
+  }
+}
