@@ -23,25 +23,28 @@ a:hover{
 }
 .navBar ul{
   list-style-type:none;
-  padding-left: 60px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:900px;
 }
 .navBar li{
+  /*
   display:inline;
-  display: inline-block;
-  padding:10px;
+  display: inline-block;-*/
 }
 .navBar{
   display:flex;
   justify-content:center;
   width:100%;
+  height:70px;
   transition:background-color 500ms;
   box-shadow:0px 1px 2px rgba(0,0,0,0.2);
 }
 .navReserv{
   background-color:black;
   color:white;
-  padding:7px;
-  letter-spacing:5px;
+  padding:25px;
 }
 .navReserv:hover{
   background-color:orange;
@@ -50,6 +53,7 @@ a:hover{
 .navLogo{
   font-weight:500;
   font-size:20px;
+  padding:0;
 }
 
 .fixedDisp{
@@ -58,8 +62,8 @@ a:hover{
   z-index:99;
 }
 
-.middleVoid{
-  height:400px;
+.topVoid{
+  height:100px;
 }
 
 /* recommended size for desktop 1366x768 */
@@ -130,21 +134,37 @@ body{
   border:none;
   font-size:30px;
   color:white;
-  opacity: 0.5;
+  opacity: 0.4;
   top:10px;
   left:10px;
   width:50px;
   height:50px;
   border-radius:30px;
+  box-shadow:2px 2px 2px rgba(0,0,0,0.4);
+  transition:0.5s ease-in-out;
 }
 
-@media only screen and (max-width: 900px) {
+#btnNav:hover{
+  transition:0.5s ease-in-out;
+  opacity:1;
+}
+
+#btnNav:active{
+  opacity:1;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+@media only screen and (max-width: 800px) {
   .navBar {
     display:none;
   }
+  .topVoid{
+    height:20px;
+  }
 }
 
-@media only screen and (min-width: 900px) {
+@media only screen and (min-width: 800px) {
   #btnNav {
     display:none;
   }
