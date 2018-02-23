@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-rou
 import moment from 'moment'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import request from 'superagent'
+import ImageUpload from './imageup.js'
 
 //------------------- description edit page
 export default class ModifyDesc extends React.Component {
@@ -16,12 +17,16 @@ export default class ModifyDesc extends React.Component {
       descdata:{
         title:"",
         context:"",
-        dateedit:moment()
-      }
+        dateedit:moment(),
+        withimage:false,
+        image:""
+      },
+      imagedata:""
     }
     this.sendBack = this.sendBack.bind(this)
     this.updateDescContext = this.updateDescContext.bind(this)
     this.confirmModify = this.confirmModify.bind(this)
+    this.updateImage = this.updateImage.bind(this)
   }
 
   sendBack(e){
@@ -50,32 +55,28 @@ export default class ModifyDesc extends React.Component {
   confirmModify(){
     this.state.descdata.dateedit = moment().format('YYYY-MM-DD')
 
-    const params={
+    request.post('/modwimg')
+    .query({
+      token:this.props.token,
       targetid:this.props.targetid,
-      type:'desc',
       createnew:this.props.createnew,
-      token:this.props.token
-    }
-
-    const esc = encodeURIComponent
-    let query = Object.keys(params)
-    .map(k => esc(k) + '=' + esc(params[k]))
-    .join('&')
-
-    fetch('/modifydata?' + query,{
-      method:'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(this.state.descdata)
+      type:'desc'
     })
+    .accept('application/json')
+    .field('data',JSON.stringify(this.state.descdata))
+    .attach('image',this.state.imagedata)
     .then((res)=>{
-      if(res){
-        alert('성공적으로 내용을 추가/갱신하였습니다')
-        this.setState({goback:true})
-      }
+      console.log('upload finished')
+      this.setState({goback:true})
     })
-    .catch((err,data)=>{
+    .catch((err)=>{
 
     })
+
+  }
+
+  updateImage(imgfile){
+    this.setState({imagedata:imgfile})
   }
 
   render(){
@@ -85,6 +86,8 @@ export default class ModifyDesc extends React.Component {
         <hr />
           <div>{this.state.descdata.title}</div>
           <div>최종 편집일자: {moment(this.state.descdata.dateedit).format('YYYY-MM-DD')}</div>
+          {this.state.descdata.withimage ? <ImageUpload postimage={this.updateImage} defaultimage={this.state.descdata.image} /> : null}
+          <div>편집 규칙: *제목(굵은글씨) -목록 >인용 @링크</div>
           <TextField floatingLabelText="내용" value={this.state.descdata.context} onChange={this.updateDescContext} multiLine={true} fullWidth={true} />
         <hr />
         <RaisedButton label="수정" onClick={this.confirmModify} />

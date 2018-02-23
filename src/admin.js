@@ -21,9 +21,13 @@ import {
   TableRowColumn,
 } from 'material-ui/Table'
 import {Tabs, Tab} from 'material-ui/Tabs'
-import { resolve } from 'path';
+import Snackbar from 'material-ui/Snackbar'
 
+import { resolve } from 'path'
+
+//custom parts
 import ModifyDesc from './modifydesc'
+import ImageUpload from './imageup'
 
 // -------------------------------- Main Page
 class AdminApp extends React.Component {
@@ -328,8 +332,23 @@ class ModifyEvent extends React.Component {
     super(props)
     this.state={
       goback:false,
-      eventdata:{},
-      imagedata:""
+      eventdata:{
+        title:"",
+        description:"",
+        brief:"",
+        datestart:moment(),
+        dateend:moment(),
+        enabled:true,
+        eventid:this.props.targetid,
+        image:"",
+        bannerimage:"",
+        link:"",
+        priority:1
+      },
+      fullimagedata:"",
+      bannerimagedata:"",
+      snackmsg:"업로드 완료",
+      snackopen:false
     }
 
     this.updateFormValues = this.updateFormValues.bind(this)
@@ -342,6 +361,7 @@ class ModifyEvent extends React.Component {
 
     this.confirmWrite = this.confirmWrite.bind(this)
     this._postimage = this._postimage.bind(this)
+    this._postbannerimage = this._postbannerimage.bind(this)
     this.delete = this.delete.bind(this)
   }
 
@@ -355,21 +375,6 @@ class ModifyEvent extends React.Component {
       .end((err,data) => {
         console.log('event detail query finished', data.body.queryeventdetail)
         this.setState({eventdata:Object.assign(data.body.queryeventdetail)})
-      })
-    }else{
-      this.setState({
-        eventdata:{
-          title:"",
-          description:"",
-          brief:"",
-          datestart:moment(),
-          dateend:moment(),
-          enabled:true,
-          eventid:this.props.targetid,
-          image:"",
-          link:"",
-          priority:1,
-        }
       })
     }
   }
@@ -411,50 +416,25 @@ class ModifyEvent extends React.Component {
     this.state.eventdata.dateend = moment(this.state.eventdata.dateend).format('YYYY-MM-DD')
     console.log('try modify data', {targetid:this.props.targetid,type:'event',createnew:this.props.createnew,token:this.props.token,
                 eventdata:this.state.eventdata})
-    let _frmImage = new FormData()
-    _frmImage.append('image',this.state.imagedata)
-    
-    const params={
-      targetid:this.props.targetid,
-      type:'event',
-      createnew:this.props.createnew,
-      token:this.props.token
-    }
-    const esc = encodeURIComponent
-    let query = Object.keys(params)
-    .map(k => esc(k) + '=' + esc(params[k]))
-    .join('&')
 
-    if(this.state.imagedata){
-      console.log('uploading image')
-      fetch('/postimage?token=' + this.props.token, {
-        method:'POST',
-        body: _frmImage
-      })
-      .then((res)=>{
-        this.state.eventdata.image = res
-        fetch('/modifydata?' + query ,{
-          method:'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(this.state.eventdata)
-        })
-        .then((res)=>{
-          this.setState({goback:true})
-        })
-        .catch((err)=>{        })
-      })
-      .catch((err)=>{    })
-    }else{
-      fetch('/modifydata?' + query ,{
-        method:'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify(this.state.eventdata)
-      })
-      .then((res)=>{
-        this.setState({goback:true})
-      })
-      .catch((err)=>{    })
-    }
+    request.post('/modwimg')
+    .query({
+      token:this.props.token,
+      targetid:this.props.targetid,
+      createnew:this.props.createnew,
+      type:'event'
+    })
+    .accept('application/json')
+    .field('data',JSON.stringify(this.state.eventdata))
+    .attach('image',this.state.fullimagedata)
+    .attach('image',this.state.bannerimagedata)
+    .then((res)=>{
+      console.log('upload finished')
+      this.setState({goback:true})
+    })
+    .catch((err)=>{
+
+    })
   }
 
   delete(){
@@ -472,7 +452,13 @@ class ModifyEvent extends React.Component {
   }
 
   _postimage(imgfile){
-    this.setState({imagedata:imgfile})
+    console.log('image is set',imgfile)
+    this.setState({fullimagedata:imgfile})
+  }
+
+  _postbannerimage(imgfile){
+    console.log('banner is set',imgfile)
+    this.setState({bannerimagedata:imgfile})
   }
 
   render(){
@@ -485,7 +471,8 @@ class ModifyEvent extends React.Component {
           <TextField floatingLabelText="짧은 설명" value={this.state.eventdata.brief} onChange={updateFormValues} name="brief" fullWidth={true} /><br />
           <TextField floatingLabelText="관련 웹페이지 주소" value={this.state.eventdata.link} onChange={updateFormValues} name="link" fullWidth={true} /><br />
           <TextField floatingLabelText="상세 설명(여러줄 입력 가능)" value={this.state.eventdata.description} onChange={updateFormValues} name="description" multiLine={true} fullWidth={true} /> <br/>
-          <ImageUpload postimage={this._postimage}/>
+          배너 이미지(가로 800px 세로 400px)<ImageUpload postimage={this._postbannerimage} defaultimage={this.state.eventdata.bannerimage} /><br /><br />
+          상세 이미지(가로사이즈 800px 이하권장)<ImageUpload postimage={this._postimage} defaultimage={this.state.eventdata.image}/>
           <Toggle label="이벤트 표시(활성화)" name="enabled" onToggle={this.updateFormToggle} labelPosition="right" toggled={this.state.eventdata.enabled} /> <br />
           <DatePicker floatingLabelText="시작일자" name="datestart" value={new Date(moment(this.state.eventdata.datestart).format('YYYY-MM-DD'))} onChange={this.updateDateStart}  /> <br />
           <DatePicker floatingLabelText="종료일자" name="dateend" value={new Date(moment(this.state.eventdata.dateend).format('YYYY-MM-DD'))} onChange={this.updateDateEnd}  /> <br />
@@ -500,68 +487,13 @@ class ModifyEvent extends React.Component {
         {this.props.createnew ? null : <RaisedButton label="삭제" onClick={this.delete}/> }
         <RaisedButton label="취소" onClick={this.sendBack}/>
         {this.state.goback ? <Redirect to="/admin/control" /> : null }
+        <Snackbar open={this.state.snackopen} message={this.state.snackmsg} autoHideDuration={4000} onRequestClose={this.handleRequestClose} />
       </div>
     )
   }
 }
 
-//-------------------- image upload component
-class ImageUpload extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {file: '',imagePreviewUrl: ''};
-    this._handleSubmit = this._handleSubmit.bind(this)
-  }
 
-  _handleSubmit(e) {
-    e.preventDefault();
-    // TODO: do something with -> this.state.file
-    //console.log('handle uploading-', this.state.file);
-    this.props.postimage(this.state.file)
-  }
-
-  _handleImageChange(e) {
-    e.preventDefault();
-
-    let reader = new FileReader();
-    let file = e.target.files[0];
-
-    reader.onloadend = () => {
-      this.setState({
-        file: file,
-        imagePreviewUrl: reader.result
-      });
-    }
-
-    reader.readAsDataURL(file)
-  }
-
-  render() {
-    let {imagePreviewUrl} = this.state;
-    let $imagePreview = null;
-    if (imagePreviewUrl) {
-      $imagePreview = (<img src={imagePreviewUrl} />);
-    } else {
-      $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
-    }
-
-    return (
-      <div className="previewComponent">
-        <form onSubmit={(e)=>this._handleSubmit(e)}>
-          <input className="fileInput" 
-            type="file" 
-            onChange={(e)=>this._handleImageChange(e)} />
-          <button className="submitButton" 
-            type="submit" 
-            onClick={(e)=>this._handleSubmit(e)}>Upload Image</button>
-        </form>
-        <div className="imgPreview">
-          {$imagePreview}
-        </div>
-      </div>
-    )
-  }
-}
   
 
 ReactDOM.render(<AdminApp />,document.getElementById('root'))

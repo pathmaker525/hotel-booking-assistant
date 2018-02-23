@@ -10,12 +10,12 @@ module.exports = {
   devtool:'inline-source-map',
   module:{
     rules:[
-      {  test: /.js$/, loader: 'babel-loader', options: {presets:['es2015','react']}  },
+      {  test: /\.js$/, loader: 'babel-loader', options: {presets:['es2015','react']}  },
       {test: /\.css$/, loader:'style-loader'},
       { test: /\.css$/, loader: 'css-loader' ,options:{modules:true,localIdentName: "[name]__[local]___[hash:base64:5]" }}
     ]
-  },
-  plugins: [
+  }
+  /*,plugins: [
     new webpack.DefinePlugin({ //<--key to reduce React's size
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
@@ -24,4 +24,5 @@ module.exports = {
     //new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin(),
   ]
+  */
 }

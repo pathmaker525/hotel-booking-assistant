@@ -59,8 +59,25 @@ table{
   text-align:right;
 }
 
-.service td{
+h1{
+  text-align:center;
+}
 
+hr{
+  border:1px solid black;
+}
+
+.service{
+  width:100%;
+}
+
+.service td{
+  width:25%;
+}
+
+.servicecont {
+  margin-left:5%;
+  margin-right:5%;
 }
 
 .hide{
@@ -91,5 +108,6 @@ table{
   }
   .service td{
     display:block;
+    width:100%;
   }
 }

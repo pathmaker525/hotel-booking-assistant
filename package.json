@@ -37,6 +37,7 @@
     "babel-preset-stage-1": "^6.24.1",
     "css-loader": "^0.28.9",
     "material-ui": "^0.20.0",
+    "pegjs": "^0.10.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-moment": "^0.7.0",

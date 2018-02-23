@@ -22,7 +22,17 @@ const path = require('path')
 const tmpDir = path.join(__dirname,'tmp')
 const pubDir = path.join(__dirname, 'pub')
 const dstDir = path.join(__dirname, 'dist')
-const uploader = multer({dest: tmpDir})
+
+
+const storage = multer.diskStorage({
+  destination: (req,file,cb)=>{
+    cb(null,'pub/')
+  },
+  filename: (req,file,cb)=>{
+    cb(null,Date.now() + file.originalname)
+  }
+})
+const upload = multer({storage:storage})
 
 //access to static files
 app.use('/pub', express.static(pubDir))
@@ -195,10 +205,11 @@ app.get('/dbreset',(req,res)=>{
               title varchar(20),\
               brief varchar(40),\
               description text,\
-              image varchar(40),\
+              image varchar(255),\
+              bannerimage varchar(255),\
               enabled bool,\
               priority int,\
-              link varchar(100));'),
+              link varchar(255));'),
 
             t2.none('CREATE TABLE descs (descid serial not null primary key,\
               title varchar(100),\
@@ -214,26 +225,9 @@ app.get('/dbreset',(req,res)=>{
       res.json({result:false})
     })
   }
-  /*
-  if(validateToken(propertoken)){
-    db.task( t => {
-      return t.none('DROP TABLE IF EXISTS events;DROP TABLE IF EXISTS descriptions;') // this won't have any consequence if the table doesn't exist
-      .then(()=>{
-        return t.none('CREATE TABLE events (eventid serial not null primary key, datestart date,\
-          dateend date, title varchar(20), brief varchar(40), description text, image varchar(40),\
-          enabled bool, priority int, link varchar(100));')
-      })
-    }).then(()=>{
-      res.json({result:true})
-    }).catch(err=>{
-      res.json({result:false})
-    })
-  }else{
-    res.json({result:false})
-  }*/
 })
 
-app.post('/postimage',uploader.single('image'),(req,res)=>{
+app.post('/postimage',upload.single('image'),(req,res)=>{
   console.log('image upload request')
   if(validateToken(req.query.token)){
     if(req.file.mimetype == 'image/png' || req.file.mimetype =='image/jpeg'){
@@ -246,14 +240,25 @@ app.post('/postimage',uploader.single('image'),(req,res)=>{
 
 //change every upload to 'post' --> query is not safe for transaction
 //return status after finishing the action --> 200:ok, 204:empty but ok, 400:bad request
-app.post('/modifydata',(req,res)=>{
+
+//modify with image
+app.post('/modwimg',upload.any(),(req,res,next)=>{
+  console.log('upload request with image')
+  console.log('query:',req.query)
+  console.log('body:',req.body.data)
+  
+  let bodydata = JSON.parse(req.body.data)
+  console.log('files info:',req.files)
+
   if(validateToken(req.query.token)){
     if(req.query.type === 'event'){
+      if(req.files[0]) { bodydata.image = req.files[0].filename }
+      if(req.files[1]) { bodydata.bannerimage = req.files[1].filename }
       if(req.query.createnew === 'true'){
-        const ed = req.body
+        const ed = bodydata
         db.none('INSERT INTO events \
-        (eventid, datestart, dateend, title, brief, description, image, enabled, priority, link) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);',[
-          req.query.targetid, ed.datestart, ed.dateend, ed.title, ed.brief, ed.description, ed.image, ed.enabled, ed.priority, ed.link
+        (eventid, datestart, dateend, title, brief, description, image, bannerimage, enabled, priority, link) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);',[
+          req.query.targetid, ed.datestart, ed.dateend, ed.title, ed.brief, ed.description, ed.image, ed.bannerimage, ed.enabled, ed.priority, ed.link
         ])
         .then(()=>{
           //send status so that the browser won't hang
@@ -263,9 +268,9 @@ app.post('/modifydata',(req,res)=>{
           console.log(err)
         })
       }else{
-        const ed = req.body
-        db.none('UPDATE events SET datestart=$1, dateend=$2, title=$3, brief=$4, description=$5, image=$6, enabled=$7, priority=$8, link=$9 WHERE eventid=$10;',[
-          ed.datestart, ed.dateend, ed.title, ed.brief, ed.description, ed.image, ed.enabled, ed.priority, ed.link, req.query.targetid
+        const ed = bodydata
+        db.none('UPDATE events SET datestart=$1, dateend=$2, title=$3, brief=$4, description=$5, image=$6, enabled=$7, priority=$8, link=$9, bannerimage=$10 WHERE eventid=$11;',[
+          ed.datestart, ed.dateend, ed.title, ed.brief, ed.description, ed.image, ed.enabled, ed.priority, ed.link, ed.bannerimage, req.query.targetid
         ])
         .then(()=>{
           res.status(200).json({result:true})
@@ -275,7 +280,9 @@ app.post('/modifydata',(req,res)=>{
         })
       }
     }else if(req.query.type === "desc"){
-      db.none('UPDATE descs SET context=$1, dateedit=CURRENT_DATE WHERE descid=$2;',[req.body.context,req.query.targetid])
+      if(req.files[0]) {bodydata.image = req.files[0].filename}
+      console.log(bodydata)
+      db.none('UPDATE descs SET context=$1, image=$2, dateedit=CURRENT_DATE WHERE descid=$3;',[bodydata.context,bodydata.image,req.query.targetid])
       .then(()=>{
         res.status(200).json({result:true})
       })
@@ -287,6 +294,11 @@ app.post('/modifydata',(req,res)=>{
     console.log("wrong token! --- modification rejected")
     res.json({result:false})
   }
+
+})
+
+//modify without image
+app.post('/modwoimg',(req,res)=>{
 })
 
 app.get('/deleteevent',(req,res)=>{
