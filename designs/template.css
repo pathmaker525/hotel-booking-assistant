@@ -21,6 +21,7 @@ a:hover:after {
 a:hover{
   color:#3366FF;
 }
+
 .navBar ul{
   list-style-type:none;
   display:flex;

@@ -10,6 +10,17 @@
   color:#3366FF;
 }
 
+.img a{
+  color:white;
+  padding:10px;
+  border:1px solid white;
+  border-radius:3px;
+}
+
+.img a:hover{
+  background-color:#3366FF;
+}
+
 .rm-db{
   background-image:url('https://s-ec.bstatic.com/images/hotel/max1024x768/370/37024558.jpg');
 }
@@ -34,7 +45,6 @@ table{
   height:500px;
   color:white;
   font-weight:500;
-  font-size:40px;
   text-shadow:2px 2px 2px rgba(0,0,0,0.4);
   text-align:right;
 }
@@ -67,6 +77,7 @@ hr{
   border:1px solid black;
 }
 
+
 .service{
   width:100%;
 }
@@ -78,24 +89,6 @@ hr{
 .servicecont {
   margin-left:5%;
   margin-right:5%;
-}
-
-.hide{
-  display:none;
-}
-
-.zoomed{
-  position:fixed;
-  z-index:100;
-  width:90%;
-  height:100%;
-  top:0;
-  left:0;
-  background-color:rgba(0,0,0,0.5);
-}
-
-.carousel-cont{
-  width:800px;
 }
 
 .exit{
