@@ -25,7 +25,16 @@ $(function(){
     }
   })
   
-
+  $(".owl-carousel").owlCarousel({
+    items:1,
+    center:true,
+    loop:true,
+    autoWidth:true,
+    autoplay:true,
+    autoPlaySpeed:5000,
+    autoplayTimeout:1000,
+    autoplayHoverPause:true
+  });
 
 });
 

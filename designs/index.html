@@ -6,12 +6,13 @@
 
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
   <link rel="stylesheet" type="text/css" href="./index.css">
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.theme.default.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.css" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
   
   <script src="./index.js"></script>
 </head>
@@ -82,11 +83,11 @@
     <!-- three welcome page detail pieces -->
     <div class="downWelcome">
 
-      <div>
-        <div class="fotorama" data-fit="cover" data-width="800" data-height="400" data-autoplay="2000">
+      <div class="carousel-cont">
+        <div class="owl-carousel">
           <!--fotorama div elemetns shouldn't be empty-->
-          <div data-img="https://i.imgur.com/beNgtXj.jpg"> </div>
-          <div data-img="https://www.bicsport.com/assets/images/3/BIC-Surf_2016_benthouard_1817_3000px-f17d0cb4-520a2433.jpg"> </div>
+          <div class="owl-item"><img src="https://i.imgur.com/beNgtXj.jpg"/> </div>
+          <div class="owl-item"><img src="https://www.bicsport.com/assets/images/3/BIC-Surf_2016_benthouard_1817_3000px-f17d0cb4-520a2433.jpg"/> </div>
         </div>
         <div class="downM">
           <p>tel 032.123.4567</p>
