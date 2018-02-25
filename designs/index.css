@@ -96,6 +96,14 @@ a:hover{
 .carousel-cont{
   width:900px;
 }
+.carouselHide{
+  font-size:30px;
+  background:none;
+  border:none;
+}
+.carouselHide:hover{
+  background:rgba(255,255,255,0.3);
+}
 
 .downWelcome{
   display:flex;

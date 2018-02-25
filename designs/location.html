@@ -11,7 +11,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
   
   <link rel="stylesheet" type="text/css" href="./template.css">
-  <link rel="stylesheet" type="text/css" href="./location.css">
   <script src="./template.js"></script>
 </head>
 
@@ -62,6 +61,7 @@
   
     <div class="topVoid"></div>
   <!-- location.html starts from here -->
+  <link rel="stylesheet" type="text/css" href="./location.css">
   <div class="locationCont">
       <div class="navLocation">
 
@@ -107,7 +107,7 @@
             l-71.512,71.415c-5.36,5.448-14.08,5.448-19.441,0c-5.356-5.358-5.356-14.09,0-19.441l71.417-71.504
             c8.994-8.907,8.994-23.442,0-32.438c-8.998-8.996-23.528-8.996-32.439,0L243.732,119.899z" fill="white" fill-rule="evenodd"/></svg>
         </div>
-        맛집 정보
+        주변 맛집
       </a>
 
     </div>
@@ -121,7 +121,7 @@
     <h2>주의사항</h2>
     <hr />
     <p>교통상황에 따라 버스 시간표보다 조금 늦거나 일찍 도착할 수 있으니 주의바랍니다.</p>
-    <p>E6100B, E6100, E6104, E6104B 버스는 ebus앱, 신용카드로 결제 가능하며 교통카드 및 현금 결제는 불가능합니다.</p>
+    <p>E6100B, E6100, E6104, E6104B 버스는 ebus앱, 신용카드만 결제 가능하며<br/> 교통카드 및 현금 결제는 불가능합니다.</p>
 
     <br />
     <span class="locationBadge">인천 공항 → 호텔</span>
@@ -163,18 +163,33 @@
         </tr>
       </tbody>
     </table>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6339.079700903397!2d126.70958899999998!3d37.400713!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x256cc05154ec8711!2sstellar+marina+hotel!5e0!3m2!1sko!2skr!4v1519540610725" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+    <iframe class="googlemap" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6339.079700903397!2d126.70958899999998!3d37.400713!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x256cc05154ec8711!2sstellar+marina+hotel!5e0!3m2!1sko!2skr!4v1519540610725" frameborder="0" style="border:0" allowfullscreen></iframe>
 
     <div class="titleH" id="sightseeing">볼만한 곳</div>
     <!-- sightseeing template will be inserted here -->
-    <div class="elemPlaces">
-      <img src="http://heritage.unesco.or.kr//wp-content/uploads/2016/12/%EB%B6%88%EA%B5%AD%EC%82%AC-1024x736.jpg" />
-      
+    <div class="contPlace">
+      <div class="elemPlace" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 67%, rgba(0,0,0,0.7) 100%), url('http://heritage.unesco.or.kr//wp-content/uploads/2016/12/%EB%B6%88%EA%B5%AD%EC%82%AC-1024x736.jpg');">
+        <h1>불국사</h1>
+        <hr />
+        <p>걸어서 20분, 032-123-4567</p>
+        <p>경상북도 경주시 진현동 15-1번지 토함산 기슭에 위치한, 신라 연간을 기원으로 하는 사찰. 1995년 12월에 토함산 중턱의 암자 석굴암과 공동으로 유네스코 세계유산으로 지정되었다.</p>
+      </div>
+
     </div>
     <!-- sightseeing template ends here -->
-    <div class="titleH" id="foods">맛집 정보</div>
+    <div class="titleH" id="foods">주변 맛집</div>
     <!-- nearby restaurant template will be inserted here -->
+    <div class="contPlace">
+        <div class="elemPlace" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 67%, rgba(0,0,0,0.7) 100%), url('https://travelblog.expedia.co.kr/wp-content/uploads/2015/11/1517.png');">
+          <h1>샌프란시스코 스테이크</h1>
+          <hr />
+          <p>걸어서 20분, 032-123-4567</p>
+          <p>고기가 아주 맛있는 집</p>
+        </div>
+      </div>
     <!-- nearby restaurant template ends here -->
+
+
   </div> <!-- end of locationCont -->
 
   <!-- location.html ends here -->

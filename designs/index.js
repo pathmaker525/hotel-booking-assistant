@@ -8,7 +8,6 @@ $(function(){
 
   $(window).on('scroll',function(e){
     var scroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-    
     console.log(scroll);
     
     if(scroll >= 100){
@@ -16,7 +15,6 @@ $(function(){
       $('.navLogo').css('display','inline');
       $('.navBar').addClass(['scrolled','scrolledshadow']);
       $('.navli').css('color','black');
-  
     }else{
       $('.titleWelcome').show();
       $('.navLogo').css('display','none');
@@ -44,4 +42,9 @@ function openNav() {
 
 function closeNav() {
   $("#mySidenav").css('width','0');
+}
+
+function hideCarousel(){
+  $('.owl-carousel').css('display','none');
+  $('.carouselHide').css('display','none');
 }
