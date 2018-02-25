@@ -1,12 +1,14 @@
 /* @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); */
 
-a{
+/* essential color: #3366FF(stellar navy) */
+
+.navBar a{
   text-decoration:none;
   color:black;
   transition:200ms;
   position: relative;
 }
-a:after {
+.navBar a:after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -15,19 +17,18 @@ a:after {
   border-bottom: 2px solid #3366FF;
   transition: 0.4s;
 }
-a:hover:after {
+.navBar a:hover:after {
   width: 100%;
 }
-a:hover{
+.navBar a:hover{
   color:#3366FF;
 }
 
-.navBar ul{
-  list-style-type:none;
+.navBar nav{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  width:900px;
+  width:100%
 }
 
 .navBar{
@@ -39,19 +40,19 @@ a:hover{
   box-shadow:0px 1px 2px rgba(0,0,0,0.2);
   background-color:white;
 }
-.navReserv{
+a.navReserv{
   background-color:black;
   color:white;
   padding:25px;
 }
-.navReserv:hover{
+a.navReserv:hover{
   background-color:orange;
   color:#222;
 }
 .navLogo{
   font-weight:500;
   font-size:20px;
-  padding:0;
+  padding:0 0 0 25px;
 }
 
 .fixedDisp{
@@ -169,7 +170,7 @@ body{
 }
 
 @media only screen and (max-width: 900px) {
-  .navBar li{
+  .navBar a{
     font-size:14px;
   }
 }

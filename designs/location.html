@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  
+  <link rel="stylesheet" type="text/css" href="./template.css">
+  <link rel="stylesheet" type="text/css" href="./location.css">
+  <script src="./template.js"></script>
+</head>
+
+<body>
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="#">Reservation</a>
+  <a href="#">Offers</a>
+  <br />
+  <a href="#">About</a>
+  <a href="#">Locations</a>
+  <a href="#">Rooms</a>
+  <a href="#">Facilities</a>
+  <a href="#">Restaurant</a>
+  <a href="#">Go Back</a>
+</div>
+
+<button id="btnNav" onclick="openNav()">&#9776;</button>
+
+<div id="main">
+  <div class="wrapper" id="wrapper">
+    <!-- nav & bg -->
+    </div>
+    <div class="fixedDisp" >
+    <div class="navBar">
+      <nav>
+        <div class="navLogo" data-aos="zoom-out">
+          <svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px" y="0px" width="30px" height="30px"
+          viewBox="0 0 100 100" xml:space="preserve">
+          <g><polygon fill="#2446C4" points="49.5,50.033
+          12,12.533 12,88 87,88 87,12.533"/></g>
+          </svg>
+          <a href="#">STELLAR MARINA</a>
+        </div>
+        <a href="#">ABOUT</a>
+        <a href="#">RESTAURANT</a>
+        <a href="#">LOCATION</a>
+        <a href="#">ROOMS</a>
+        <a href="#">FACILITIES</a>
+        <a href="#">OFFERS</a>
+        <a href="#" class="navReserv">RESERVATION</a>
+      </nav>
+    </div>
+          
+    </div> <!--container for fixed display -->
+  
+    <div class="topVoid"></div>
+  <!-- location.html starts from here -->
+  <div class="locationCont">
+      <div class="navLocation">
+
+      <a href="#directions">
+        <div class="svgEllipse">
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            width="40px" height="40px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+          <path d="M256,0C167.641,0,96,71.625,96,160c0,24.75,5.625,48.219,15.672,69.125C112.234,230.313,256,512,256,512l142.594-279.375
+            C409.719,210.844,416,186.156,416,160C416,71.625,344.375,0,256,0z M256,256c-53.016,0-96-43-96-96s42.984-96,96-96
+            c53,0,96,43,96,96S309,256,256,256z" fill="white"/>
+          </svg>
+        </div>
+        오시는 길
+      </a>
+
+      <a href="#sightseeing">
+        <div class="svgEllipse">
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            width="40px" height="40px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+          <g>
+            <circle cx="255.811" cy="285.309" r="75.217" fill="white"/>
+            <path d="M477,137H352.718L349,108c0-16.568-13.432-30-30-30H191c-16.568,0-30,13.432-30,30l-3.718,29H34
+              c-11.046,0-20,8.454-20,19.5v258c0,11.046,8.954,20.5,20,20.5h443c11.046,0,20-9.454,20-20.5v-258C497,145.454,488.046,137,477,137
+              z M255.595,408.562c-67.928,0-122.994-55.066-122.994-122.993c0-67.928,55.066-122.994,122.994-122.994
+              c67.928,0,122.994,55.066,122.994,122.994C378.589,353.495,323.523,408.562,255.595,408.562z M474,190H369v-31h105V190z" fill="white"/>
+          </g>
+          </svg>
+        </div>
+        볼만한 곳
+      </a>
+
+      <a href="#foods">
+        <div class="svgEllipse">
+          <svg enable-background="new 0 0 500 500" id="Layer_1" version="1.1" viewBox="0 0 500 500" height="40px" width="40px"
+            xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <path clip-rule="evenodd" d="M243.732,119.899c-26.893,26.894-20.625,61.868-29.622,95.939
+            L63.296,63.568c-3.274-3.46-7.999-5.634-13.177-5.634c-9.995,0-18.17,8.083-18.17,18.17v6.176
+            c0,54.788,23.623,156.183,97.398,237.404L42.49,406.457c-14.086,14.072-14.086,36.971,0,51.052c14.08,14.092,36.977,14.092,50.968,0
+            l86.582-86.675l51.791,51.79l44.698-40.612l75.506,75.497c13.983,14.092,36.883,14.092,50.962,0
+            c14.092-14.081,14.092-36.979,0-51.052l-119.476-120.48c34.442-9.449,69.686-2.812,96.585-29.715l81.221-81.219
+            c8.999-8.909,8.999-23.441,0-32.43c-8.997-9.004-23.528-9.004-32.438,0l-71.493,71.407c-5.36,5.358-14.092,5.358-19.448,0
+            c-5.448-5.358-5.448-14.08,0-19.438l71.413-71.504c8.99-8.909,8.99-23.441,0-32.438c-8.995-8.988-23.53-8.988-32.429,0
+            l-71.512,71.415c-5.36,5.448-14.08,5.448-19.441,0c-5.356-5.358-5.356-14.09,0-19.441l71.417-71.504
+            c8.994-8.907,8.994-23.442,0-32.438c-8.998-8.996-23.528-8.996-32.439,0L243.732,119.899z" fill="white" fill-rule="evenodd"/></svg>
+        </div>
+        맛집 정보
+      </a>
+
+    </div>
+    <img src="http://stellarmarinahotel.com/images/sub01/mapkor.png" id="directions" /> <br />
+
+    <h1>주소</h1>
+    <hr />
+    <p>인천광역시 남동구 논현로 46번길 51(논현동) 642-1)</p>
+    <p>호구포역 ①번 또는 ②번 출구로 나와서 바로 길 건너편</p>
+
+    <h2>주의사항</h2>
+    <hr />
+    <p>교통상황에 따라 버스 시간표보다 조금 늦거나 일찍 도착할 수 있으니 주의바랍니다.</p>
+    <p>E6100B, E6100, E6104, E6104B 버스는 ebus앱, 신용카드로 결제 가능하며 교통카드 및 현금 결제는 불가능합니다.</p>
+
+    <br />
+    <span class="locationBadge">인천 공항 → 호텔</span>
+    <table>
+      <thead>
+        <tr>
+          <th>교통편</th>
+          <th>소요시간</th>
+          <th>비용</th>
+          <th>설명</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>자가용</td>
+          <td>30분</td>
+          <td>(톨비)</td>
+          <td>없음</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <span class="locationBadge">호텔 → 인천 공항</span>
+    <table>
+      <thead>
+        <tr>
+          <th>교통편</th>
+          <th>소요시간</th>
+          <th>비용</th>
+          <th>설명</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>자가용</td>
+          <td>30분</td>
+          <td>(톨비)</td>
+          <td>없음</td>
+        </tr>
+      </tbody>
+    </table>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6339.079700903397!2d126.70958899999998!3d37.400713!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x256cc05154ec8711!2sstellar+marina+hotel!5e0!3m2!1sko!2skr!4v1519540610725" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+    <div class="titleH" id="sightseeing">볼만한 곳</div>
+    <!-- sightseeing template will be inserted here -->
+    <div class="elemPlaces">
+      <img src="http://heritage.unesco.or.kr//wp-content/uploads/2016/12/%EB%B6%88%EA%B5%AD%EC%82%AC-1024x736.jpg" />
+      
+    </div>
+    <!-- sightseeing template ends here -->
+    <div class="titleH" id="foods">맛집 정보</div>
+    <!-- nearby restaurant template will be inserted here -->
+    <!-- nearby restaurant template ends here -->
+  </div> <!-- end of locationCont -->
+
+  <!-- location.html ends here -->
+
+
+</div> <!-- #main-- >
+</body>
+</html>
