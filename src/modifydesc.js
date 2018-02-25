@@ -18,7 +18,7 @@ export default class ModifyDesc extends React.Component {
         title:"",
         context:"",
         dateedit:moment(),
-        withimage:false,
+        category:0, // 0 - typical desc w/o image, 1 - typical desc w/image, 2 - sightseeing(with details) , 3 - gastronomy
         image:""
       },
       imagedata:""
@@ -86,7 +86,7 @@ export default class ModifyDesc extends React.Component {
         <hr />
           <div>{this.state.descdata.title}</div>
           <div>최종 편집일자: {moment(this.state.descdata.dateedit).format('YYYY-MM-DD')}</div>
-          {this.state.descdata.withimage ? <ImageUpload postimage={this.updateImage} defaultimage={this.state.descdata.image} /> : null}
+          {this.state.descdata.category > 0 ? <ImageUpload postimage={this.updateImage} defaultimage={this.state.descdata.image} /> : null}
           <div>편집 규칙: *제목(굵은글씨) -목록 >인용 @링크</div>
           <TextField floatingLabelText="내용" value={this.state.descdata.context} onChange={this.updateDescContext} multiLine={true} fullWidth={true} />
         <hr />
