@@ -1,10 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom'
+
 import moment from 'moment'
 import request from 'superagent'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import Toggle from 'material-ui/Toggle'
@@ -127,10 +129,11 @@ export default class ModifyEvent extends React.Component {
   }
 
   delete(){
-    request.get('/deleteevent')
+    request.get('/delete')
     .query({
       targetid:this.props.targetid,
-      token:this.props.token
+      token:this.props.token,
+      dbtype:'events'
     })
     .end((err,data)=>{
       if(data.body.result){
@@ -154,14 +157,14 @@ export default class ModifyEvent extends React.Component {
     const updateFormValues = e =>this.updateFormValues(e)
     return (
       <div>
-        편집중인 이벤트 번호: {this.props.targetid}
+        <p>편집중인 이벤트 번호: {this.props.targetid}</p>
         <hr />
           <TextField floatingLabelText="이벤트 제목" value={this.state.eventdata.title} onChange={updateFormValues} name="title" fullWidth={true} /><br />
           <TextField floatingLabelText="짧은 설명" value={this.state.eventdata.brief} onChange={updateFormValues} name="brief" fullWidth={true} /><br />
           <TextField floatingLabelText="관련 웹페이지 주소" value={this.state.eventdata.link} onChange={updateFormValues} name="link" fullWidth={true} /><br />
           <TextField floatingLabelText="상세 설명(여러줄 입력 가능)" value={this.state.eventdata.description} onChange={updateFormValues} name="description" multiLine={true} fullWidth={true} /> <br/>
-          배너 이미지(가로 800px 세로 400px)<ImageUpload postimage={this._postbannerimage} defaultimage={this.state.eventdata.bannerimage} /><br /><br />
-          상세 이미지(가로사이즈 800px 이하권장)<ImageUpload postimage={this._postimage} defaultimage={this.state.eventdata.image}/>
+          <div>배너 이미지(가로 800px 세로 400px)<ImageUpload postimage={this._postbannerimage} defaultimage={this.state.eventdata.bannerimage} /></div><br /><br />
+          <div>상세 이미지(가로사이즈 800px 이하권장)<ImageUpload postimage={this._postimage} defaultimage={this.state.eventdata.image}/></div>
           <Toggle label="이벤트 표시(활성화)" name="enabled" onToggle={this.updateFormToggle} labelPosition="right" toggled={this.state.eventdata.enabled} /> <br />
           <DatePicker floatingLabelText="시작일자" name="datestart" value={new Date(moment(this.state.eventdata.datestart).format('YYYY-MM-DD'))} onChange={this.updateDateStart}  /> <br />
           <DatePicker floatingLabelText="종료일자" name="dateend" value={new Date(moment(this.state.eventdata.dateend).format('YYYY-MM-DD'))} onChange={this.updateDateEnd}  /> <br />

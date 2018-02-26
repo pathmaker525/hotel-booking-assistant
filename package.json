@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "nodemon prototype.js",
-    "run": "node main.js"
+    "runcashier": "nodemon server.js cashier",
+    "runhome": "nodemon server.js home"
   },
   "author": "Sungryeol Park",
   "license": "ISC",

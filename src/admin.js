@@ -62,8 +62,11 @@ class AdminApp extends React.Component {
         <Route exact path='/admin' render={(props) => <AdminLogin updateAuth={this.updateAuth}/>} />
         <Route path='/admin/control' render={(props) => <AdminControl token={this.state.adminToken} updateTarget={this.updateTarget} />} />
         <Route path='/admin/modifyevent' render={(props) => <ModifyEvent token={this.state.adminToken} targetid={this.state.targetid} createnew={false} /> } />
-        <Route path='/admin/modifydesc' render={(props) => <ModifyDesc token={this.state.adminToken} targetid={this.state.targetid} />} />
+        <Route path='/admin/modifydesc' render={(props) => <ModifyDesc token={this.state.adminToken} targetid={this.state.targetid} createnew={false} />} />
         <Route path='/admin/createevent' render={(props) =><ModifyEvent token={this.state.adminToken} targetid={this.state.targetid} createnew={true} />} />
+        {/* sorry...ths part has to be lazy due to time constraint... 2 - sightseeing 3 - gastronomy*/}
+        <Route path='/admin/createdescplace' render={(props) => <ModifyDesc token={this.state.adminToken} targetid={this.state.targetid} createnew={true} category={2} />} />
+        <Route path='/admin/createdescfood' render={(props) =><ModifyDesc token={this.state.adminToken} targetid={this.state.targetid} createnew={true} category={3} />} />
         <Route component={ WrongAccess } />
       </Switch>
       </div>
@@ -175,7 +178,7 @@ class AdminControl extends React.Component {
     this.updateDesc = this.updateDesc.bind(this)
     this.activeModifyEvent = this.activeModifyEvent.bind(this)
     this.activeModifyDesc = this.activeModifyDesc.bind(this)
-    this.createEvent = this.createEvent.bind(this)
+    this.addItem = this.addItem.bind(this)
     this.dbreset = this.dbreset.bind(this)
 
     this.updateEvent()
@@ -232,16 +235,29 @@ class AdminControl extends React.Component {
     this.setState({modify:2})
   }
 
-  createEvent(e){
+  addItem(e){
     e.preventDefault()
+    console.log('updating type:' + e.currentTarget.dataset.type)
+    let routeNo = 0
+    let idType = ''
+    if(e.currentTarget.dataset.type === 'promo'){
+      routeNo = 3
+      idType = 'eventlastid'
+    }else if(e.currentTarget.dataset.type === 'place'){
+      routeNo = 4
+      idType = 'desclastid'
+    }else if(e.currentTarget.dataset.type === 'food'){
+      routeNo = 5
+      idType = 'desclastid'
+    }
     request.get('/queryJSON')
     .query({
-      type:"eventlastid"
+      type:idType
     })
     .end((err,data)=>{
-      console.log('last event id fetched :',data.body.querylastid)
+      console.log('last id fetched :',data.body.querylastid)
       this.props.updateTarget(data.body.querylastid + 1)
-      this.setState({modify:3})
+      this.setState({modify:routeNo})
     })
   }
 
@@ -258,6 +274,7 @@ class AdminControl extends React.Component {
   }
 
   render(){
+    const category = ['설명(사진 없음)', '설명(사진 포함)', '인근 관광명소 정보', '인근 맛집 정보']
     return (
       <div>
       <Tabs>
@@ -291,7 +308,7 @@ class AdminControl extends React.Component {
           <hr />
           <Toggle name="eventsShowAll" label="기한이 지났거나 숨긴 이벤트도 모두 표시"
             onToggle={this.handleToggle} defaultToggled={this.state.eventsShowAll} labelPosition="right"/>
-          <RaisedButton label="새로운 프로모션 등록하기" onClick={this.createEvent}/>
+          <RaisedButton label="새로운 프로모션 등록하기" onClick={this.addItem} data-type="promo"/>
         </Tab>
         
         {/* ------------------------description list-----------------------------  */}
@@ -300,6 +317,7 @@ class AdminControl extends React.Component {
           <Table selectable={false} onCellClick={this.activeModifyDesc}>
             <TableHeader displaySelectAll={false}>
               <TableRow>
+                <TableHeaderColumn>카테고리</TableHeaderColumn>
                 <TableHeaderColumn>설명 이름</TableHeaderColumn>
                 <TableHeaderColumn>내용</TableHeaderColumn>
                 <TableHeaderColumn>편집 일자</TableHeaderColumn>
@@ -308,6 +326,7 @@ class AdminControl extends React.Component {
             <TableBody showRowHover={true}>
               {this.state.descs.map((row,index) => (
                 <TableRow key={index}>
+                  <TableRowColumn>{category[row.category]}</TableRowColumn>
                   <TableRowColumn>{row.title}</TableRowColumn>
                   <TableRowColumn>{row.context.slice(0,20)}...</TableRowColumn>
                   <TableRowColumn>{moment(row.dateedit).format('YYYY-MM-DD')}</TableRowColumn>
@@ -315,11 +334,15 @@ class AdminControl extends React.Component {
               ))}
             </TableBody>
           </Table>
+          <RaisedButton label="새로운 장소 등록하기" onClick={this.addItem} data-type="place"/>
+          <RaisedButton label="새로운 맛집 등록하기" onClick={this.addItem} data-type="food"/>
         </Tab>
       </Tabs>
       {this.state.modify === 1 ? <Redirect to="/admin/modifyevent" /> : null }
       {this.state.modify === 2 ? <Redirect to="/admin/modifydesc" /> : null }
       {this.state.modify === 3 ? <Redirect to="/admin/createevent" /> : null }
+      {this.state.modify === 4 ? <Redirect to="/admin/createdescplace" /> : null}
+      {this.state.modify === 5 ? <Redirect to="/admin/createdescfood" /> : null}
       <RaisedButton label="모든 내용 초기화하기" onClick={this.dbreset} />
       </div>
     )

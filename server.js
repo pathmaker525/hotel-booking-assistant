@@ -166,6 +166,10 @@ app.get('/', (req,res) => {
   res.render('index.ejs')
 })
 
+app.get('/temp',(req,res) =>{
+  res.render('template.ejs')
+})
+
 /*
 io.on("connection", (skt) => {
   skt.on('feature', (data)=> {})
