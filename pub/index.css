@@ -45,21 +45,99 @@
   background-blend-mode: multiply;
 }
 
-.navBar {
+.navBarScrollUp{
   background-color:transparent;
   box-shadow:none;
+  margin-left:25px;
+  width:calc(100% - 25px);
 }
 
-.navBar > nav a {
+.navBar.navBarScrollUp > nav a {
   color:white;
+}
+
+.navBar.navBarScrollUp a:hover{
+  color:#3366FF;
 }
 
 .navBar > nav{
   max-width:1200px;
 }
 
+.titleWelcome {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  margin-bottom:45px;
+}
+
+.titleWelcome h1,h2 {
+  text-shadow:0 2px 2px black;
+  margin:0;
+  padding:0;
+}
+
+.titleWelcome hr{
+  border-width: 0 0 1px 0;
+  border-style:solid white;
+  box-shadow:0 2px 2px black;
+  width:90%;
+  max-width:400px;
+  margin:20px;
+}
+
+.carouselHide{
+  background:transparent;
+  border:none;
+  font-size:30px;
+  color:white;
+  transition:0.4s;
+  opacity:0.4;
+}
+.carouselHide:hover{
+  background:rgba(0,0,0,0.4);
+  transition:0.4s;
+  opacity:1;
+}
+
 body{
   color:white;
+}
+
+.downInfo{
+  text-align:center;
+}
+.downInfo > p{
+  margin:0;
+  text-shadow:0 2px 2px black;
+}
+
+.whitePage{
+  background-color:white;
+  color:black;
+  margin-top:50px;
+  padding:20px;
+  text-align:center;
+}
+
+.whitePage img{
+  margin:30px;
+}
+
+.gray{
+  text-align:center;
+  background-color:lightgray;
+  color:rgba(0,0,0,0.6);
+  padding:100px;
+  box-sizing:border-box;
+}
+.gray > h1 {
+  margin:0;
+}
+.gray hr{
+  border:1px solid rgba(0,0,0,0.4);
+  max-width:600px;
 }
 
 /* below 900px width */

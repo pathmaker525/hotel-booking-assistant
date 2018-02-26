@@ -169,6 +169,16 @@ body{
   transform: translateY(4px);
 }
 
+.imgResponsive{
+  background-size:cover;
+  background-position:center; 
+}
+
+.size600{
+  height:600px;
+  max-width:600px;
+}
+
 @media only screen and (max-width: 800px) {
   .navBar {
     display:none;
@@ -181,6 +191,7 @@ body{
     align-items:flex-end;
   }
 }
+
 
 @media only screen and (max-width: 900px) {
   .navBar a{

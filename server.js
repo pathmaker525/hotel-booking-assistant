@@ -166,6 +166,18 @@ app.get('/', (req,res) => {
   res.render('index.ejs')
 })
 
+app.get('/rooms', (req,res) => {
+  res.render('rooms.ejs')
+})
+
+app.get('/locations',(req,res)=>{
+  res.render('locations.ejs')
+})
+
+app.get('/about',(req,res)=>{
+  res.render('about.ejs')
+})
+
 app.get('/temp',(req,res) =>{
   res.render('template.ejs')
 })

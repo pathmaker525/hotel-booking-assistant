@@ -1,50 +1,39 @@
 $(function(){
 
-  AOS.init({
-    duration: 1200,
-  })
-
-  $('.navLogo').hide();
+  //initialization
+  updateScroll();
 
   $(window).on('scroll',function(e){
-    var scroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-    console.log(scroll);
-    
-    if(scroll >= 100){
-      $('.titleWelcome').hide();
-      $('.navLogo').css('display','inline');
-      $('.navBar').addClass(['scrolled','scrolledshadow']);
-      $('.navli').css('color','black');
-    }else{
-      $('.titleWelcome').show();
-      $('.navLogo').css('display','none');
-      $('.navBar').removeClass(['scrolled','scrolledshadow']);
-      $('.navli').css('color','white');
-    }
+    updateScroll();
   })
-  
-  $(".owl-carousel").owlCarousel({
-    items:1,
-    center:true,
-    loop:true,
-    autoWidth:true,
-    autoplay:true,
-    autoPlaySpeed:5000,
-    autoplayTimeout:1000,
-    autoplayHoverPause:true
-  });
+
+  $('.carouselHide').on('click',function(e){
+    hideCarousel();
+  })
+
+  var promoSlider = new KiwwwiSlider(document.querySelectorAll('#slider')[0], 3000, 1);
 
 });
 
-function openNav() {
-  $("#mySidenav").css('width', '250px');
-}
+function updateScroll(){
+  var scroll = $(window).scrollTop();
+  console.log(scroll);
+  if(scroll <= 100){
 
-function closeNav() {
-  $("#mySidenav").css('width','0');
+    $('.titleWelcome').css('visilibity','hidden');
+    $('.navLogo').css('display','none');
+    $('.navBar').addClass('navBarScrollUp');
+  }else{
+    //do not mix .css with .hide -> it causes 'easing error'
+    $('.titleWelcome').css('visibility','visible');
+    $('.navLogo').css('display','inline');
+    $('.navBar').removeClass('navBarScrollUp');
+  }
 }
 
 function hideCarousel(){
-  $('.owl-carousel').css('display','none');
-  $('.carouselHide').css('display','none');
+  $('.container').css('visibility','hidden');
+  $('.carouselHide').css('visibility','hidden');
+  $('.slide-left').css('display','none');
+  $('.slide-right').css('display','none');
 }

@@ -1,69 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.css" />
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-  
-  <link rel="stylesheet" type="text/css" href="./template.css">
-
-  <script src="./template.js"></script>
-</head>
+  <% include partials/header %>
 
 <body>
-<div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="#">Reservation</a>
-  <a href="#">*Offers</a>
-  <br />
-  <a href="./about.html">About</a>
-  <a href="#">Locations</a>
-  <a href="./rooms.html">Rooms</a>
-  <a href="#">Facilities</a>
-  <a href="./index.html">Back</a>
-</div>
-
-<button id="btnNav" onclick="openNav()">&#9776;</button>
-
-<div id="main">
-  <div class="wrapper" id="wrapper">
-    <!-- nav & bg -->
-    </div>
-    <div class="fixedDisp" >
-    <div class="navBar">
-      <nav>
-        <div class="navLogo" data-aos="zoom-out">
-          <svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          x="0px" y="0px" width="30px" height="30px"
-          viewBox="0 0 100 100" xml:space="preserve">
-          <g><polygon fill="#2446C4" points="49.5,50.033
-          12,12.533 12,88 87,88 87,12.533"/></g>
-          </svg>
-          <a href="#">STELLAR MARINA</a>
-        </div>
-        <a href="#">ABOUT</a>
-        <a href="#">RESTAURANT</a>
-        <a href="#">LOCATION</a>
-        <a href="#">ROOMS</a>
-        <a href="#">FACILITIES</a>
-        <a href="#">OFFERS</a>
-        <a href="#" class="navReserv">RESERVATION</a>
-      </nav>
-    </div>
-          
-    </div> <!--container for fixed display -->
+  <% include partials/sidenav %>
   
-    <div class="topVoid"></div>
+  <div id="main"> <!-- main part is necessary for sidenav -->
 
-    <!-- start of rooms.html-->
-    <link rel="stylesheet" type="text/css" href="./rooms.css">
-    <script src="./rooms.js"></script>
+  <% include partials/nav %>
+  <!-- [rooms.ejs] page starts from here -->
+    <link rel="stylesheet" type="text/css" href="/pub/rooms.css">
+    <script src="/pub/rooms.js"></script>
 
     <div class="tablecont">
       <!-- table1 -->
@@ -228,7 +175,7 @@
       </table>
       </div>
     </div>
-
+  
     <div class="servicecont">
     <h1>객실 서비스</h1>
     <hr/>
@@ -242,7 +189,7 @@
         </tr>
       </tbody>
     </table>
-
+  
     <table class="service">
       <tbody>
         <tr>
@@ -255,17 +202,11 @@
     </table>
     </div>
 
-    <!-- end of rooms.html-->
+  <!-- [rooms.ejs] page ends from here -->
 
-  <div class="footer">
-    <p>스텔라마리나 인천광역시 남동구 논현로 46번길51(642-1)</p>
-    <p>사업자 등록번호 131-86-64961</p>
-    <p>통신판매업 신고번호 제2014-인천남동구-0615호</p>
-    <p>(주)스텔라마리나호텔 대표 주영환</p>
-    <p>Designed by sungryeol park</p>
-    <p>SITEMAP | 개인정보처리방침 | 이용약관<p>
   </div>
+  <!-- end of main -->
 
-</div> <!-- #main-- >
+  <% include partials/footer %>
 </body>
 </html>
