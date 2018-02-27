@@ -74,7 +74,7 @@ function getSettings (){
       }
     })
     return result
-  }else if(/^(postgresql:\/\/.*)$/.test(process.argv[2])){
+  }else if(/^(postgres:\/\/.*)$/.test(process.argv[2])){
     return process.argv[2].slice()
   }
 }
