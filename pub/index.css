@@ -119,6 +119,9 @@ body{
   margin-top:50px;
   padding:20px;
   text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
 .whitePage img{
@@ -129,8 +132,9 @@ body{
   text-align:center;
   background-color:lightgray;
   color:rgba(0,0,0,0.6);
-  padding:100px;
+  padding: 50px 10px 50px 10px;
   box-sizing:border-box;
+  width:90%;
 }
 .gray > h1 {
   margin:0;
@@ -140,9 +144,27 @@ body{
   max-width:600px;
 }
 
+.whitePage table{
+  border-collapse:collapse;
+}
+.whitePage td{
+  padding:20px;
+  border-bottom:1px solid darkgray;
+}
+
+.info1{
+  padding:20px;
+  border-top:1px solid darkgray;
+  border-bottom:1px solid darkgray;
+  max-width:500px;
+  margin:20px;
+}
+
 /* below 900px width */
 @media only screen and (max-width: 900px) {
-
+  .gray{
+    width:100%;
+  }
 }
 
 /* wider than 900px width */

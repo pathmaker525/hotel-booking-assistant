@@ -35,6 +35,11 @@
   height:70px;
 }
 
+#directions{
+  width:100%;
+  max-width:800px;
+}
+
 .locationCont > hr{
   border: 1px solid black;
   margin-bottom:0px;

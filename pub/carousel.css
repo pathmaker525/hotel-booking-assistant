@@ -23,6 +23,12 @@
     font-family: sans-serif;
 }
 
+article img{
+  width:100%;
+  max-width:800px;
+  object-fit:contain;
+}
+
 .slide-left,
 .slide-right{
     top: 14rem;

@@ -171,12 +171,16 @@ body{
 
 .imgResponsive{
   background-size:cover;
-  background-position:center; 
+  background-position:center;
 }
 
 .size600{
+  margin:20px;
   height:600px;
+  width:100%;
+  max-width:800px;
   max-width:600px;
+  border-radius:15px;
 }
 
 @media only screen and (max-width: 800px) {

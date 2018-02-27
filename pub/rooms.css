@@ -85,6 +85,8 @@ hr{
 
 .service td{
   width:25%;
+  padding-top:25px;
+  padding-bottom:25px;
 }
 
 .servicecont {

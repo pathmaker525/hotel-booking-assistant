@@ -175,7 +175,7 @@ app.get('/queryJSON', (req,res) => {
 })
 
 app.get('/', (req,res) => {
-  db.any('SELECT eventid, bannerimage, link FROM events WHERE datestart >= CURRENT_DATE AND CURRENT_DATE <= dateend ORDER BY priority, eventid;')
+  db.any('SELECT eventid, bannerimage, link FROM events WHERE datestart <= CURRENT_DATE AND CURRENT_DATE <= dateend ORDER BY priority, eventid;')
   .then((sqldata)=>{
     if(sqldata.length >= 1) {
       res.render('index.ejs',{events:sqldata})

@@ -2,3 +2,9 @@
   display:flex;
   justify-content:center;
 }
+
+.imgcont img{
+  width:100%;
+  max-width:800px;
+  object-fit:contain;
+}
