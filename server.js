@@ -24,15 +24,17 @@ const pubDir = path.join(__dirname, 'pub')
 const dstDir = path.join(__dirname, 'dist')
 
 const nodemailer = require('nodemailer')
-/*
+
 const smtpTransport = nodemailer.createTransport({  
   service: 'Gmail',
   auth: {
-      user: '구글메일 아이디',
-      pass: '구글메일 비밀번호'
+      user: 'stellarmarinahotel',
+      pass: 'rsv1100@'
+  },
+  tls:{
+    rejectUnauthorized:false
   }
 });
-*/
 
 const storage = multer.diskStorage({
   destination: (req,file,cb)=>{
@@ -243,30 +245,49 @@ app.get('/reservation',(req,res)=>{
 
 app.post('/reservation',(req,res)=>{
   console.log(req.body)
-  res.status(200).render('confirmed.ejs',{msgtitle:'요청하신 내용 전송이 완료되었습니다',msgdetail:'최대한 빨리 답변 드리겠습니다'})
-  /*
-  let sender = '송성광 <saltfactory@gmail.com>'
-  let subject = '예약메일'
-  let htmlContent = '<h1>HTML 보내기 테스트</h1><p><img src="http://www.nodemailer.com/img/logo.png"/></p>'
+
+  const sender = '스텔라마리나 <stellarmarinahotel@gmail.com>'
+  const subject = moment().format('YYYY-MM-DD') + '-' +  req.body.bookername + ' 예약요청(홈페이지)'
+
+  let htmlContent = '<h1>스텔라마리나 홈페이지 예약요청</h1>'
+                + `<p>예약자명:${req.body.bookername}</p>`
+                + `<p>예약일자:${req.body.start} - ${req.body.end}</p>`
+                + `<p>룸타입:${req.body.roomtype}</p>`
+                + `<p>인원:${req.body.users}</p>`
+                + `<p>요청사항:${req.body.specialRequest}</p>`
+                + `<p>추가요청:${req.body.extraRequest}</p>`
+                + `<p>패키지:${req.body.pkg}</p>`
+                + `<p>전화번호:${req.body.telephone}</p>`
+                + `<p>이메일:${req.body.email}</p>`
+                + '<p>홈페이지를 통하여 예약된 내역입니다. 최대한 빠른 회신 부탁드립니다. </p>'
 
   const mailOptions = {  
     from: sender,
-    to: 'rsv@stellarmarinahotel.com',
+    to: 'sungryeolp@gmail.com',
     subject: subject,
-    //text: '평문 보내기 테스트 '
+
     html: htmlContent
   };
 
-  smtpTransport.sendMail(mailOptions, function(error, response){
-    if (error){
-        console.log(error);
+  smtpTransport.sendMail(mailOptions,(err,res) =>{
+    if (err){
+        console.log(err);
     } else {
-        console.log("Message sent : " + response.message);
+        console.log("Message sent : " + res.message);
     }
     smtpTransport.close();
-    res.status(200);
   });
-  */
+
+  res.status(200).render('confirmed.ejs',{msgtitle:'요청하신 내용 전송이 완료되었습니다',msgdetail:'최대한 빨리 답변 드리겠습니다'})
+})
+
+app.get('/restaurant', (req,res)=>{
+  res.render('restaurant.ejs')
+})
+
+
+app.get('/facilities', (req,res)=>{
+  res.render('facilities.ejs')
 })
 
 /*
