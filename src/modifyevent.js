@@ -118,7 +118,7 @@ export default class ModifyEvent extends React.Component {
     .accept('application/json')
     .field('data',JSON.stringify(this.state.eventdata))
     .attach('image',this.state.fullimagedata)
-    .attach('image',this.state.bannerimagedata)
+    .attach('bannerimage',this.state.bannerimagedata)
     .then((res)=>{
       console.log('upload finished')
       this.setState({goback:true})

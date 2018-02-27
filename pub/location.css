@@ -100,6 +100,26 @@
   box-shadow:0 2px 3px black;
 }
 
+.elemPlace > p{
+  padding-left:20px;
+  padding-right:20px;
+}
+
+.elemPlace a {
+  text-decoration:none;
+  padding:8px;
+  border-radius:12px;
+  background-color:rgba(0,0,0,0.4);
+  opacity:0.4;
+  transition:0.5s;
+  color:white;
+}
+
+.elemPlace a:hover{
+  transition:0.5s;
+  opacity:1;
+}
+
 .googlemap{
   width:90%;
   max-width:800px;

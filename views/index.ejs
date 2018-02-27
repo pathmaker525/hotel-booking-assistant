@@ -38,15 +38,19 @@
           <polygon points="9,50.001 9,2.6 49.998,26.3 91.022,50.001 50.01,73.702 9,97.402 " fill="white"/>
          </svg>
         </div>
-        <article>
-          <div><a href="https://naver.com"><img src="/pub/1519630771938winterpkg-banner.jpg"/></a></div>
-        </article>
-        <article>
-          <div><a href="https://naver.com"><img src="/pub/1519374215152IMG_2006.jpg"/></a></div>
-        </article>
-        <article>
-          <div><a href="https://naver.com"><img src="/pub/1519630908155cutlet.jpg"/></a></div>
-        </article>
+        <% events.forEach(function (el){ %>
+          <article>
+            <div>
+              <a href="/offers?eventid=<%= el.eventid %>">
+                <% if (el.bannerimage) { %>
+                <img src="/pub/<%= el.bannerimage %>"/>
+                <% }else{ %>
+                <h1><%= el.title %></h1>
+                <% } %>
+              </a>
+            </div>
+          </article>
+        <% }); %>
       </div>
     </div>
 

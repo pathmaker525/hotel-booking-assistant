@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <% include partials/header %>
+
+<body>
+  <% include partials/sidenav %>
+  
+  <div id="main"> <!-- main part is necessary for sidenav -->
+
+  <% include partials/nav %>
+  <!-- [offers.ejs] page starts from here -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/pub/offers.css">
+  <div id="gallery" data-init="<%= init %>">
+    
+  </div>
+  <div class="offersCont">
+    <h1>진행중인 프로모션/이벤트</h1>
+    <hr />
+    <% if (currentEvents.length >= 1) { %>
+    <% currentEvents.forEach(function(elCurEvt){ %>
+      
+    <div class="elemOffer">
+      <a class="btnEvent" href="#" data-detail="<%= elCurEvt.image %>">
+        <img src="/pub/<%= elCurEvt.bannerimage %>" />
+      </a>
+      <div class="offerdesc">
+        <h1><%= elCurEvt.title %></h1>
+        <p><span><%= elCurEvt.datestart %></span> - <span><%= elCurEvt.dateend %></span></p>
+        <p> - <%= elCurEvt.brief %></p>
+      </div>
+    </div>
+
+    <% }) %>
+    <% } %>
+  
+
+    <h1>지난 프로모션/이벤트</h1>
+    <hr />
+
+    <% if (pastEvents.length >= 1) { %>}
+    <% pastEvents.forEach(function(elPastEvt){ %>
+      
+      <div class="elemOffer">
+        <a class="btnEvent" href="#" data-detail="<%= elPastEvt.image %>">
+          <img src="/pub/<%= elPastEvt.bannerimage %>" />
+        </a>
+        <div class="offerdesc">
+          <h1><%= elPastEvt.title %></h1>
+          <p><span><%= elPastEvt.datestart %></span> - <span><%= elPastEvt.dateend %></span></p>
+          <p> - <%= elPastEvt.brief %></p>
+        </div>
+      </div>
+  
+      <% }) %>
+      <% } %>
+
+  </div>
+
+    <script src="/pub/offers.js"></script>
+
+  <!-- [offers.ejs] page ends from here -->
+
+  </div>
+  <!-- end of main -->
+
+  <% include partials/footer %>
+</body>
+</html>

@@ -163,7 +163,19 @@ app.get('/queryJSON', (req,res) => {
 })
 
 app.get('/', (req,res) => {
-  res.render('index.ejs')
+  db.any('SELECT eventid, bannerimage, link FROM events WHERE datestart >= CURRENT_DATE AND CURRENT_DATE <= dateend ORDER BY priority, eventid;')
+  .then((sqldata)=>{
+    if(sqldata.length >= 1) {
+      res.render('index.ejs',{events:sqldata})
+    }else{
+      res.render('index.ejs',{events:
+        [{title:"진행중인 이벤트가 없습니다",bannerimage:""}]
+      })
+    }
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
 })
 
 app.get('/rooms', (req,res) => {
@@ -171,7 +183,34 @@ app.get('/rooms', (req,res) => {
 })
 
 app.get('/locations',(req,res)=>{
-  res.render('locations.ejs')
+  //0,1, place = 2, restaurant = 3
+  db.multi('SELECT title, maplink, weblink, image, extra, context from descs WHERE category=2;'
+  + 'SELECT title, maplink, weblink, image, extra, context from descs WHERE category=3;')
+  .then((sqldata)=>{
+    res.render('locations.ejs',{places:sqldata[0], foods:sqldata[1]})
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+})
+
+app.get('/offers',(req,res)=>{
+  let queryadd = ''
+  if(req.query.eventid){
+    queryadd = `SELECT image FROM events WHERE eventid=${req.query.eventid};`
+  }
+  db.multi('SELECT * FROM events WHERE enabled=true AND datestart <= CURRENT_DATE AND CURRENT_DATE <= dateend;' +
+            'SELECT * FROM events WHERE enabled=true AND datestart > CURRENT_DATE OR CURRENT_DATE > dateend;' + queryadd)
+  .then((sqldata)=>{
+    if(sqldata.length < 3){
+      res.render('offers.ejs',{init:'', currentEvents:sqldata[0], pastEvents:sqldata[1]})
+    }else{
+      res.render('offers.ejs',{init:sqldata[2][0].image, currentEvents:sqldata[0], pastEvents:sqldata[1]})
+    }
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
 })
 
 app.get('/about',(req,res)=>{
@@ -281,8 +320,18 @@ app.post('/modwimg',upload.any(),(req,res,next)=>{
 
   if(validateToken(req.query.token)){
     if(req.query.type === 'event'){
-      if(req.files[0]) { bodydata.image = req.files[0].filename }
-      if(req.files[1]) { bodydata.bannerimage = req.files[1].filename }
+
+      if(req.files.length > 2){
+        console.log('*** the server has received more than 2 images while uploading ***')
+      }
+      req.files.forEach((singleFile)=>{
+        if(singleFile.fieldname === 'image'){
+          bodydata.image = singleFile.filename
+        }else if(singleFile.fieldname === 'bannerimage'){
+          bodydata.bannerimage = singleFile.filename
+        }
+      })
+
       if(req.query.createnew === 'true'){
         const ed = bodydata
         db.none('INSERT INTO events \

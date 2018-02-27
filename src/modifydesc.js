@@ -141,7 +141,7 @@ export default class ModifyDesc extends React.Component {
           <TextField floatingLabelText="내용" value={this.state.descdata.context} onChange={this.updateContent} multiLine={true} fullWidth={true} name="context"/>
         <hr />
         <RaisedButton label={this.props.createnew ? "등록" : "수정"} onClick={this.confirmModify} />
-        {this.props.createnew ? null : <RaisedButton label="삭제" onClick={this.delete}/> }
+        {this.props.createnew && this.category < 2 ? null : <RaisedButton label="삭제" onClick={this.delete}/> }
         {this.state.goback ? <Redirect to="/admin/control" /> : null }
         <RaisedButton label="취소" onClick={this.sendBack}/>
       </div>
