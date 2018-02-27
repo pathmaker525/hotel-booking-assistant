@@ -29,7 +29,7 @@ const smtpTransport = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
       user: 'stellarmarinahotel',
-      pass: 'rsv1100@'
+      pass: ''//masked for git upload
   },
   tls:{
     rejectUnauthorized:false
