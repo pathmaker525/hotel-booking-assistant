@@ -60,7 +60,9 @@ function getSettings (){
       console.log(el)
     })
     process.exit()
-  }else if (process.argv[2]){
+  }else if (/^(postgres:.*)/.test(process.argv[2])){
+    return process.argv[2]
+  }else {
     let result = {}
     Object.keys(dbsettings).map((el) => {
       if(el === process.argv[2]){
@@ -74,8 +76,6 @@ function getSettings (){
       }
     })
     return result
-  }else if(/^(postgres:\/\/.*)$/.test(process.argv[2])){
-    return process.argv[2].slice()
   }
 }
 
