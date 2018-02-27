@@ -6,7 +6,8 @@
   "scripts": {
     "test": "nodemon prototype.js",
     "runcashier": "nodemon server.js cashier",
-    "runhome": "nodemon server.js home"
+    "runhome": "nodemon server.js home",
+    "start": "node server.js postgres://phjtaeqyzfyreu:986e99a460d7c90428c83e56f22805e3ca14b15b7c8064d3eecf714693f618ae@ec2-54-243-31-34.compute-1.amazonaws.com:5432/d5s7v03mrmqg68"
   },
   "author": "Sungryeol Park",
   "license": "ISC",
