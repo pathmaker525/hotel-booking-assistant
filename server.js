@@ -23,6 +23,16 @@ const tmpDir = path.join(__dirname,'tmp')
 const pubDir = path.join(__dirname, 'pub')
 const dstDir = path.join(__dirname, 'dist')
 
+const nodemailer = require('nodemailer')
+/*
+const smtpTransport = nodemailer.createTransport({  
+  service: 'Gmail',
+  auth: {
+      user: '구글메일 아이디',
+      pass: '구글메일 비밀번호'
+  }
+});
+*/
 
 const storage = multer.diskStorage({
   destination: (req,file,cb)=>{
@@ -221,6 +231,44 @@ app.get('/temp',(req,res) =>{
   res.render('template.ejs')
 })
 
+app.get('/reservation',(req,res)=>{
+  db.any('SELECT eventid,title FROM events WHERE enabled=true AND datestart <= CURRENT_DATE AND CURRENT_DATE <= dateend')
+  .then((sqldata)=>{
+    res.render('reservation.ejs',{pkgs:sqldata})
+  })
+  .catch((err)=>{
+
+  })
+})
+
+app.post('/reservation',(req,res)=>{
+  console.log(req.body)
+  res.status(200).render('confirmed.ejs',{msgtitle:'요청하신 내용 전송이 완료되었습니다',msgdetail:'최대한 빨리 답변 드리겠습니다'})
+  /*
+  let sender = '송성광 <saltfactory@gmail.com>'
+  let subject = '예약메일'
+  let htmlContent = '<h1>HTML 보내기 테스트</h1><p><img src="http://www.nodemailer.com/img/logo.png"/></p>'
+
+  const mailOptions = {  
+    from: sender,
+    to: 'rsv@stellarmarinahotel.com',
+    subject: subject,
+    //text: '평문 보내기 테스트 '
+    html: htmlContent
+  };
+
+  smtpTransport.sendMail(mailOptions, function(error, response){
+    if (error){
+        console.log(error);
+    } else {
+        console.log("Message sent : " + response.message);
+    }
+    smtpTransport.close();
+    res.status(200);
+  });
+  */
+})
+
 /*
 io.on("connection", (skt) => {
   skt.on('feature', (data)=> {})
@@ -292,17 +340,6 @@ app.get('/dbreset',(req,res)=>{
       console.log(err)
       res.json({result:false})
     })
-  }
-})
-
-app.post('/postimage',upload.single('image'),(req,res)=>{
-  console.log('image upload request')
-  if(validateToken(req.query.token)){
-    if(req.file.mimetype == 'image/png' || req.file.mimetype =='image/jpeg'){
-      res.status(200).json({result:true,imageurl:req.file.filename})
-    }else{
-      res.status(200).json({result:false})
-    }
   }
 })
 

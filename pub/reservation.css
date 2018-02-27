@@ -1,0 +1,72 @@
+.reserveCont{
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+}
+
+.reserveCont table{
+  border-bottom:1px solid lightgray;
+  border-collapse:collapse;
+  max-width:800px;
+}
+
+.reserveCont table td{
+  border-top:1px solid lightgray;
+  padding:20px;
+  text-align:center;
+}
+
+.reserveCont ul{
+  text-align:left;
+}
+
+.inputBeautify{
+  border-width:0 0 1px 0;
+  border-bottom:1px solid black;
+  font-size:18px;
+  font-family:'Noto Sans KR',sans-serif
+}
+
+.btnBeautify{
+  background-color:#3366FF;
+  padding:20px;
+  border-radius:4px;
+  color:white;
+  border:none;
+  transition:0.5s;
+  margin:30px;
+  font-size:25px;
+}
+.btnBeautify:hover{
+  opacity:0.7;
+  transition:0.5s;
+}
+
+textarea{
+  resize:none;
+  width:100%;
+  height:100px;
+}
+
+.selector{
+  width:400px;
+}
+.tdContact {
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+}
+.tdContact div{
+  margin-top:20px;
+  text-align:left;
+}
+
+@media only screen and (max-width: 800px) {
+  .reserveCont table td{
+    display:block;
+  }
+  /* select room, family size control centering under 800 px width display*/
+  .selector{
+    width:100%;
+  }
+}
