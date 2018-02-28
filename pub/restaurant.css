@@ -29,7 +29,6 @@
   display:flex;
 }
 .foodDivide > div{
-  width:50%;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -41,10 +40,12 @@
 }
 
 .foodMenu{
-  background-color:rgba(0,0,0,0.5);
-  text-shadow:0 2px 2px black;
-  color:white;
   padding:20px;
+}
+.foodMenu h2{
+  padding-bottom:20px;
+  border-bottom:solid 1px #3366FF;
+  width:220px;
 }
 
 .foodMenu ul{
@@ -54,10 +55,12 @@
 }
 
 .brk{
+  width:70%;
   background-image:url("https://144f2a3a2f948f23fc61-ca525f0a2beaec3e91ca498facd51f15.ssl.cf3.rackcdn.com/uploads/food_portal_data/recipes/recipe/hero_article_image/1305/letterbox_resizeimage593x426xA6SozL86Xx.jpg");
 }
 .lnc{
-  background-image:url("https://img.grouponcdn.com/deal/FwWA7a5D8LnHTtgYFYqQSPmMMC3/Fw-700x420/v1/c700x420.jpg");
+  width:40%;
+  min-width:400px;
 }
 
 @media only screen and (max-width: 800px) {
@@ -66,4 +69,13 @@
     height:0px;
   }
 
+  .brk{
+    width:100%;
+  }
+  .lnc{
+    width:100%;
+  }
+  .foodDivide{
+    flex-direction:column;
+  }
 }

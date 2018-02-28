@@ -32,8 +32,9 @@
 }
 
 #divBack{
-  background-image:url('https://cdn4.hotelopia.com/giata/bigger/41/415419/415419a_hb_a_008.jpg');
+  background-image:url('https://i.imgur.com/TLq00YB.jpg');
   background-size:cover;
+  background-position:center;
   display:block;
   position:fixed;
   width:100%;
