@@ -1,0 +1,24 @@
+.roomtitle{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.btnReturn{
+  background-color:#3366FF;
+  padding:10px;
+  border-radius:4px;
+  color:white;
+  border:none;
+  transition:0.5s;
+  margin:30px;
+  font-size:25px;
+  
+  text-decoration:none;
+}
+.btnReturn:hover{
+  opacity:0.7;
+  transition:0.5s;
+}

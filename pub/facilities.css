@@ -1,0 +1,37 @@
+.elemFacility{
+  display:flex;
+  padding:50px;
+  box-sizing:border-box;
+}
+.elemFacility hr{
+  border-width:0 0 1px 0;
+  border-style:solid;
+
+}
+.faImg{
+  min-width:300px;
+  width:600px;
+  height:300px;
+  border-radius:20px;
+}
+.faDesc{
+  flex-grow:1;
+  margin:20px;
+  padding:40px;
+  box-sizing:border-box;
+}
+
+/* below 900px width */
+@media only screen and (max-width: 900px) {
+  .elemFacility{
+    padding:20px;
+  }
+  .faDesc{
+    padding:10px;
+  }
+}
+
+/* wider than 900px width */
+@media only screen and (min-width: 900px) {
+
+}

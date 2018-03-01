@@ -290,6 +290,29 @@ app.get('/facilities', (req,res)=>{
   res.render('facilities.ejs')
 })
 
+app.get('/roomshow',(req,res)=>{
+  console.log('roomshow:', req.query.roomtype)
+  let rawroomimages = {
+    tw:['DeluxeTwin01_m.jpg','DeluxeTwin02_m.jpg'],
+    db:['DeluxeDouble01_m.jpg','DeluxeDouble02_m.jpg'],
+    sut:['Drama_Suite01_m.jpg','Drama_Suite02_m.jpg']
+  }
+
+  let roomtype = ''
+  if(req.query.roomtype === 'tw'){
+    roomtype = 'DELUXE TWIN/디럭스 트윈'
+  }else if(req.query.roomtype === 'db'){
+    roomtype = 'DELUXE DOUBLE/디럭스 더블'
+  }else if(req.query.roomtype === 'sut'){
+    roomtype = 'DELUXE SUITE/드라마 스위트'
+  }
+
+  let roomimages = rawroomimages[req.query.roomtype].map((el)=>{
+    return path.join('/pub/', el)
+  })
+  res.render('roomshow.ejs',{roomtype:roomtype,roomimages:roomimages})
+})
+
 /*
 io.on("connection", (skt) => {
   skt.on('feature', (data)=> {})
