@@ -196,10 +196,9 @@ app.get('/rooms', (req,res) => {
 
 app.get('/locations',(req,res)=>{
   //0,1, place = 2, restaurant = 3
-  db.multi('SELECT title, maplink, weblink, image, extra, context from descs WHERE category=2;'
-  + 'SELECT title, maplink, weblink, image, extra, context from descs WHERE category=3;')
+  db.any('SELECT title, maplink, weblink, image, extra, context, category from descs WHERE category=2 or category=3;')
   .then((sqldata)=>{
-    res.render('locations.ejs',{places:sqldata[0], foods:sqldata[1]})
+    res.render('locations2.ejs',{places:sqldata})
   })
   .catch((err)=>{
     console.log(err)

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <% include partials/header %>
+
+<body>
+  <% include partials/sidenav %>
+  
+  <div id="main"> <!-- main part is necessary for sidenav -->
+
+  <% include partials/nav %>
+  <!-- [location.ejs] page starts from here -->
+  <link rel="stylesheet" type="text/css" href="/pub/locations2.css">
+
+
+  <iframe  width="100%" height="600" frameborder="0" style="border:0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2241.204057525394!2d126.7080223117851!3d37.4006817024852!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b7a0ec8102c8f%3A0x256cc05154ec8711!2sstellar+marina+hotel!5e0!3m2!1sen!2skr!4v1519923819820" allowfullscreen></iframe>
+  <h1>주소 / ADDRESS</h1>
+  <p>인천광역시 남동구 논현로 46번길 51(논현동) 642-1</p>
+  <p>51 Nonhyeon-ro 46beon-gil, Nonhyeon 2(i)-dong, Namdong-gu, Incheon</p>
+  <div class="btnCont">
+    <button>구글맵에서 보기</button>
+    <button>각종 대중교통</button>
+    <button>공항↔호텔</button>
+  </div>
+  <div class="caution">
+    <p>교통상황에 따라 버스 시간표보다 조금 늦거나 일찍 도착할 수 있으니 주의바랍니다.</p>
+    <p>E6100B, E6100, E6104, E6104B 버스는 ebus앱, 신용카드로 결제 가능하며 교통카드 및 현금 결제는 불가능합니다.</p>
+    <p>tel. 032-426-1100 / e-mail. rsv@stellarmarinahotel.com</p>
+  </div>
+  <h1>근처 둘러볼만한 곳 </h1>
+  <p>클릭(터치)하면 설명을 보실 수 있습니다.</p>
+
+
+
+  <div class="placesCont" id="places">
+
+    <% places.forEach(function(elPlace){ %>
+    <a href="#places" class="elemPlace" data-context="<%= elPlace.context %>" data-category="<%= elPlace.category %>" data-weblink="<%= elPlace.weblink %>" data-maplink="<%= elPlace.maplink %>">
+      <img src="/pub/<%= elPlace.image %>"/>
+      <h4><%= elPlace.title %></h4>
+      <p class="extra"><%= elPlace.extra %></p>
+      <p><%= elPlace.context.slice(0,70) %></p>
+    </a>
+    <% }) %>
+
+  </div>
+
+  <div id="lightbox">
+    <div id="lightboxImg" style="background-image:url('https://i.imgur.com/unYxhKD.jpg');" onclick="closeLightbox()">&nbsp;</div>
+    <h1 id="title">제목</h1>
+    <p class="iconFood"><svg enable-background="new 0 0 500 500" id="Layer_1" version="1.1" viewBox="0 0 500 500" height="40px" width="40px"
+      xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path clip-rule="evenodd" d="M243.732,119.899c-26.893,26.894-20.625,61.868-29.622,95.939
+      L63.296,63.568c-3.274-3.46-7.999-5.634-13.177-5.634c-9.995,0-18.17,8.083-18.17,18.17v6.176
+      c0,54.788,23.623,156.183,97.398,237.404L42.49,406.457c-14.086,14.072-14.086,36.971,0,51.052c14.08,14.092,36.977,14.092,50.968,0
+      l86.582-86.675l51.791,51.79l44.698-40.612l75.506,75.497c13.983,14.092,36.883,14.092,50.962,0
+      c14.092-14.081,14.092-36.979,0-51.052l-119.476-120.48c34.442-9.449,69.686-2.812,96.585-29.715l81.221-81.219
+      c8.999-8.909,8.999-23.441,0-32.43c-8.997-9.004-23.528-9.004-32.438,0l-71.493,71.407c-5.36,5.358-14.092,5.358-19.448,0
+      c-5.448-5.358-5.448-14.08,0-19.438l71.413-71.504c8.99-8.909,8.99-23.441,0-32.438c-8.995-8.988-23.53-8.988-32.429,0
+      l-71.512,71.415c-5.36,5.448-14.08,5.448-19.441,0c-5.356-5.358-5.356-14.09,0-19.441l71.417-71.504
+      c8.994-8.907,8.994-23.442,0-32.438c-8.998-8.996-23.528-8.996-32.439,0L243.732,119.899z" fill="white" fill-rule="evenodd"/></svg>
+      먹을 거리
+    </p>
+    <p class="iconPlace"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="40px" height="40px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+        <g>
+          <circle cx="255.811" cy="285.309" r="75.217" fill="white"/>
+          <path d="M477,137H352.718L349,108c0-16.568-13.432-30-30-30H191c-16.568,0-30,13.432-30,30l-3.718,29H34
+            c-11.046,0-20,8.454-20,19.5v258c0,11.046,8.954,20.5,20,20.5h443c11.046,0,20-9.454,20-20.5v-258C497,145.454,488.046,137,477,137
+            z M255.595,408.562c-67.928,0-122.994-55.066-122.994-122.993c0-67.928,55.066-122.994,122.994-122.994
+            c67.928,0,122.994,55.066,122.994,122.994C378.589,353.495,323.523,408.562,255.595,408.562z M474,190H369v-31h105V190z" fill="white"/>
+        </g></svg>
+        볼만한 곳
+    </p>
+    <p id="extra">here goes extra</p>
+    <p id="context">here goes context</p>
+    <p><a id="maplink "href="#">지도에서 보기</a><a id="weblink" href="#">웹페이지 방문</a><a href="#places" onclick="closeLightbox()">닫기</a></p>
+  </div>
+
+
+  <script src="/pub/locations2.js"></script>
+  <!-- [location.ejs] page ends from here -->
+
+  </div>
+  <!-- end of main -->
+
+  <% include partials/footer %>
+</body>
+</html>

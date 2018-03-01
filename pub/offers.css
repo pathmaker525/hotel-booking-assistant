@@ -30,6 +30,13 @@ hr{
   overflow-y:scroll;
 }
 
+#gallery img{
+  margin-top:20px;
+  margin-bottom:20px;
+  width:100%;
+  object-fit:contain;
+}
+
 #gallery * {
   text-align:center;
   color:white;
