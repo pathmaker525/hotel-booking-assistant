@@ -26,6 +26,14 @@ const dbsettings = {
     password:'986e99a460d7c90428c83e56f22805e3ca14b15b7c8064d3eecf714693f618ae',
     port:5432,
     ssl:true
+  },
+  server:{
+    user:'stellardev',
+    host:'hotelstellar',
+    password:'devhoteldb90',
+    database:'hotelstellardb',
+    port:5432,
+    ssl:true
   }
 }
 
