@@ -1,10 +1,56 @@
-.imgcont{
+
+.maininfo {
+  /*slight bug on topvoid...only with about page*/
+
+  margin-top:-20px;
+  background-size:cover;
+  background-position:center;
+  width:100%;
+  min-height:900px;
+  color:white;
+  background-color: gray;
+  background-blend-mode: multiply;
   display:flex;
   justify-content:center;
+  align-items:center;
 }
 
-.imgcont img{
-  width:100%;
-  max-width:800px;
-  object-fit:contain;
+.maininfo p{
+  font-size:20px;
+  font-weight:200;
+}
+
+.maininfo span{
+  font-size:30px;
+
+}
+
+.maininfo > div{
+  margin-left:10%;
+  margin-right:10%;
+}
+
+.maininfo hr{
+  border-bottom:none;
+  border-top:1px solid white;
+}
+
+.yearlyinfo{
+  display:flex;
+  justify-content:center;
+  padding-top:30px;
+  padding-bottom:30px;
+}
+
+.yearlyinfo h1{
+  padding:20px;
+}
+
+.yearlyinfo table{
+  border-collapse:collapse;
+}
+
+.yearlyinfo td{
+  padding:20px;
+  border-bottom:1px solid lightgray;
 }

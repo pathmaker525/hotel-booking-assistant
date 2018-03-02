@@ -22,3 +22,15 @@
   opacity:0.7;
   transition:0.5s;
 }
+.roomdetails{
+  margin-left:20%;
+  margin-right:20%;
+}
+.roomdetails hr{
+  border-bottom:none;
+  border-top:1px solid black;
+}
+
+.roomdetails ul{
+  list-style-type:square;
+}

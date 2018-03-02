@@ -1,4 +1,8 @@
 $(function(){
+  $('.form-control').on('click',function(){
+    $('#datepicker').show();
+  });
+
   $('#datepicker').datepicker({
     orientation:'bottom'
   });

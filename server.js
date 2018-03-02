@@ -174,6 +174,22 @@ app.get('/queryJSON', (req,res) => {
   }
 })
 
+app.get('/en', (req,res) => {
+  db.any('SELECT eventid, bannerimage, link FROM events WHERE datestart <= CURRENT_DATE AND CURRENT_DATE <= dateend ORDER BY priority, eventid;')
+  .then((sqldata)=>{
+    if(sqldata.length >= 1) {
+      res.render('index_en.ejs',{events:sqldata})
+    }else{
+      res.render('index_en.ejs',{events:
+        [{title:"No promotion at the moment",bannerimage:""}]
+      })
+    }
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+})
+
 app.get('/', (req,res) => {
   db.any('SELECT eventid, bannerimage, link FROM events WHERE datestart <= CURRENT_DATE AND CURRENT_DATE <= dateend ORDER BY priority, eventid;')
   .then((sqldata)=>{
@@ -198,7 +214,7 @@ app.get('/locations',(req,res)=>{
   //0,1, place = 2, restaurant = 3
   db.any('SELECT title, maplink, weblink, image, extra, context, category from descs WHERE category=2 or category=3;')
   .then((sqldata)=>{
-    res.render('locations2.ejs',{places:sqldata})
+    res.render('locations.ejs',{places:sqldata})
   })
   .catch((err)=>{
     console.log(err)
@@ -306,10 +322,34 @@ app.get('/roomshow',(req,res)=>{
     roomtype = 'DELUXE SUITE/드라마 스위트'
   }
 
+  const roomfeatures = {
+    tw:[
+        '전 객실이 20~27층의 고층에 위치',
+        '서해바다 낙조를 감상할 수 있는 최고의 전망',
+        '현대적 감각의 모던하고 깨끗한 250객실',
+        '아늑하고 안락한 서비스',
+        '프로모션 미적용시 정상가 275,000원(세금포함)'
+       ],
+    db:[
+        '전 객실이 20~27층의 고층에 위치',
+        '서해바다 낙조를 감상할 수 있는 최고의 전망',
+        '현대적 감각의 모던하고 깨끗한 250객실',
+        '아늑하고 안락한 서비스',
+        '프로모션 미적용시 정상가 275,000원(세금포함)'
+        ],
+    sut:[
+        '침실과 거실이 분리된 형태의 객실',
+        '46인치 LED TV',
+        'VIP만을 위한 안락하고 편안한 응접실',
+        '여행의 피로감을 잊게 하고 활력과 재충전을 선사하는 최고급 객실',
+        '프로모션 미적용시 정상가 660,000원(세금포함)'
+        ]
+  }
+
   let roomimages = rawroomimages[req.query.roomtype].map((el)=>{
     return path.join('/pub/', el)
   })
-  res.render('roomshow.ejs',{roomtype:roomtype,roomimages:roomimages})
+  res.render('roomshow.ejs',{roomtype:roomtype,roomimages:roomimages,roomfeatures:roomfeatures[req.query.roomtype]})
 })
 
 /*

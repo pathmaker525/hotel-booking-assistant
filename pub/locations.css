@@ -18,21 +18,21 @@
 }
 
 .btnCont{
-  margin-left:10%;
-  margin-right:10%;
+  margin: 40px 10% 40px 10%;
 }
 
-.btnCont button{
+.btnCont a{
   padding:10px;
   border-radius:20px;
   background-color:darkgray;
   color:white;
   border:solid 1px transparent;
-  margin:20px;
+  margin:0;
   transition:0.5s;
+  text-decoration:none;
 }
 
-.btnCont button:hover{
+.btnCont a:hover{
   background-color:transparent;
   color:darkgray;
   border:solid 1px darkgray;

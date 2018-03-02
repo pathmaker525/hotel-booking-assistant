@@ -8,190 +8,78 @@
   <div id="main"> <!-- main part is necessary for sidenav -->
 
   <% include partials/nav %>
-  <!-- [locations.ejs] page starts from here -->
-    <link rel="stylesheet" type="text/css" href="/pub/location.css">
-    <div class="locationCont">
-        <div class="navLocation">
-
-        <a href="#directions">
-          <div class="svgEllipse">
-            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-              width="40px" height="40px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
-            <path d="M256,0C167.641,0,96,71.625,96,160c0,24.75,5.625,48.219,15.672,69.125C112.234,230.313,256,512,256,512l142.594-279.375
-              C409.719,210.844,416,186.156,416,160C416,71.625,344.375,0,256,0z M256,256c-53.016,0-96-43-96-96s42.984-96,96-96
-              c53,0,96,43,96,96S309,256,256,256z" fill="white"/>
-            </svg>
-          </div>
-          오시는 길
-        </a>
-
-        <a href="#sightseeing">
-          <div class="svgEllipse">
-            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-              width="40px" height="40px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
-            <g>
-              <circle cx="255.811" cy="285.309" r="75.217" fill="white"/>
-              <path d="M477,137H352.718L349,108c0-16.568-13.432-30-30-30H191c-16.568,0-30,13.432-30,30l-3.718,29H34
-                c-11.046,0-20,8.454-20,19.5v258c0,11.046,8.954,20.5,20,20.5h443c11.046,0,20-9.454,20-20.5v-258C497,145.454,488.046,137,477,137
-                z M255.595,408.562c-67.928,0-122.994-55.066-122.994-122.993c0-67.928,55.066-122.994,122.994-122.994
-                c67.928,0,122.994,55.066,122.994,122.994C378.589,353.495,323.523,408.562,255.595,408.562z M474,190H369v-31h105V190z" fill="white"/>
-            </g>
-            </svg>
-          </div>
-          볼만한 곳
-        </a>
-
-        <a href="#foods">
-          <div class="svgEllipse">
-            <svg enable-background="new 0 0 500 500" id="Layer_1" version="1.1" viewBox="0 0 500 500" height="40px" width="40px"
-              xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <path clip-rule="evenodd" d="M243.732,119.899c-26.893,26.894-20.625,61.868-29.622,95.939
-              L63.296,63.568c-3.274-3.46-7.999-5.634-13.177-5.634c-9.995,0-18.17,8.083-18.17,18.17v6.176
-              c0,54.788,23.623,156.183,97.398,237.404L42.49,406.457c-14.086,14.072-14.086,36.971,0,51.052c14.08,14.092,36.977,14.092,50.968,0
-              l86.582-86.675l51.791,51.79l44.698-40.612l75.506,75.497c13.983,14.092,36.883,14.092,50.962,0
-              c14.092-14.081,14.092-36.979,0-51.052l-119.476-120.48c34.442-9.449,69.686-2.812,96.585-29.715l81.221-81.219
-              c8.999-8.909,8.999-23.441,0-32.43c-8.997-9.004-23.528-9.004-32.438,0l-71.493,71.407c-5.36,5.358-14.092,5.358-19.448,0
-              c-5.448-5.358-5.448-14.08,0-19.438l71.413-71.504c8.99-8.909,8.99-23.441,0-32.438c-8.995-8.988-23.53-8.988-32.429,0
-              l-71.512,71.415c-5.36,5.448-14.08,5.448-19.441,0c-5.356-5.358-5.356-14.09,0-19.441l71.417-71.504
-              c8.994-8.907,8.994-23.442,0-32.438c-8.998-8.996-23.528-8.996-32.439,0L243.732,119.899z" fill="white" fill-rule="evenodd"/></svg>
-          </div>
-          주변 맛집
-        </a>
-
-      </div>
-      <img src="http://stellarmarinahotel.com/images/sub01/mapkor.png" id="directions" /> <br />
-
-      <h1>주소</h1>
-      <hr />
-      <p>인천광역시 남동구 논현로 46번길 51(논현동) 642-1)</p>
-      <p>호구포역 ①번 또는 ②번 출구로 나와서 바로 길 건너편</p>
-
-      <h2>주의사항</h2>
-      <hr />
-      <p>교통상황에 따라 버스 시간표보다 조금 늦거나 일찍 도착할 수 있으니 주의바랍니다.</p>
-      <p>E6100B, E6100, E6104, E6104B 버스는 ebus앱, 신용카드만 결제 가능하며<br/> 교통카드 및 현금 결제는 불가능합니다.</p>
-
-      <br />
-      <span class="locationBadge">인천 공항 → 호텔</span>
-      <table>
-        <thead>
-          <tr>
-            <th>교통편</th>
-            <th>소요시간</th>
-            <th>비용</th>
-            <th>설명</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>자가용</td>
-            <td>30분</td>
-            <td>(톨비)</td>
-            <td>없음</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <span class="locationBadge">호텔 → 인천 공항</span>
-      <table>
-        <thead>
-          <tr>
-            <th>교통편</th>
-            <th>소요시간</th>
-            <th>비용</th>
-            <th>설명</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>자가용</td>
-            <td>30분</td>
-            <td>(톨비)</td>
-            <td>없음</td>
-          </tr>
-        </tbody>
-      </table>
-      <iframe class="googlemap" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6339.079700903397!2d126.70958899999998!3d37.400713!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x256cc05154ec8711!2sstellar+marina+hotel!5e0!3m2!1sko!2skr!4v1519540610725" frameborder="0" style="border:0" allowfullscreen></iframe>
-
-      <div class="titleH" id="sightseeing">볼만한 곳</div>
-      <!-- sightseeing template will be inserted here -->
-      <div class="contPlace">
-        <% places.forEach(function(elPlace){ %>
-        <div class="elemPlace" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 67%, rgba(0,0,0,0.7) 100%), url('/pub/<%= elPlace.image %>');">
-          <h1><%= elPlace.title %></h1>
-          <hr />
-          <p><%= elPlace.extra %></p>
-          <p><%= elPlace.context %></p>
-          <p>
-            <a href="<%= elPlace.maplink %>">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px" viewBox="0 0 512 512">
-                  <path fill="#ffffff" d="M256 14.316c-91.31 0-165.325 74.025-165.325 165.325 0.010 91.32 165.325 318.044 165.325 318.044s165.315-226.724 165.315-318.034c0.010-91.31-73.984-165.335-165.315-165.335zM256 245.494c-34.56 0-62.608-28.078-62.608-62.648 0-34.55 28.037-62.566 62.608-62.566 34.591 0 62.618 28.027 62.618 62.566 0 34.57-28.017 62.649-62.618 62.649z" />
-                </svg>
-              지도
-            </a>  
-            <a href="<%= elPlace.weblink %>">
-              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-              width="15px" height="15px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
-              <path fill="#ffffff" d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813
-                l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0
-                l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219
-                c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0
-                C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0
-                c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125
-                c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0
-                l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594
-                C274.561,395.092,246.42,392.342,220.326,382.186z"/>
-              </svg>
-              웹사이트
-            </a>
-          </p>
-        </div>
-        <% }) %>
-
-      </div>
-      <!-- sightseeing template ends here -->
+  <!-- [location.ejs] page starts from here -->
+  <link rel="stylesheet" type="text/css" href="/pub/locations.css">
 
 
-      <div class="titleH" id="foods">주변 맛집</div>
-      <!-- nearby restaurant template will be inserted here -->
-      <div class="contPlace">
-        <% foods.forEach(function(elFood){ %>
-          <div class="elemPlace" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 67%, rgba(0,0,0,0.7) 100%), url('/pub/<%= elFood.image %>');">
-            <h1><%= elFood.title %></h1>
-            <hr />
-            <p><%= elFood.extra %></p>
-            <p><%= elFood.context %></p>
-            <p>
-              <a href="<%= elFood.maplink %>">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px" viewBox="0 0 512 512">
-                  <path fill="#ffffff" d="M256 14.316c-91.31 0-165.325 74.025-165.325 165.325 0.010 91.32 165.325 318.044 165.325 318.044s165.315-226.724 165.315-318.034c0.010-91.31-73.984-165.335-165.315-165.335zM256 245.494c-34.56 0-62.608-28.078-62.608-62.648 0-34.55 28.037-62.566 62.608-62.566 34.591 0 62.618 28.027 62.618 62.566 0 34.57-28.017 62.649-62.618 62.649z" />
-                </svg>
-                지도
-              </a>  
-              <a href="<%= elFood.weblink %>">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                width="15px" height="15px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
-                <path fill="#ffffff" d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813
-                  l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0
-                  l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219
-                  c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0
-                  C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0
-                  c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125
-                  c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0
-                  l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594
-                  C274.561,395.092,246.42,392.342,220.326,382.186z"/>
-                </svg>
-                웹사이트
-              </a>
-            </p>
-          </div>
-        <% }) %>
-        </div>
-      <!-- nearby restaurant template ends here -->
+  <iframe  width="100%" height="600" frameborder="0" style="border:0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2241.204057525394!2d126.7080223117851!3d37.4006817024852!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b7a0ec8102c8f%3A0x256cc05154ec8711!2sstellar+marina+hotel!5e0!3m2!1sen!2skr!4v1519923819820" allowfullscreen></iframe>
+  <h1>주소 / ADDRESS</h1>
+  <p>인천광역시 남동구 논현로 46번길 51(논현동) 642-1</p>
+  <p>51 Nonhyeon-ro 46beon-gil, Nonhyeon 2(i)-dong, Namdong-gu, Incheon</p>
+  <div class="btnCont">
+    <a href="https://goo.gl/maps/ZFZVWeKXpPM2">구글맵에서 보기</a>
+    <a href="#">각종 대중교통</a>
+    <a href="#">공항↔호텔</a>
+    <a href="#places">둘러볼만한 곳</a>
+  </div>
+  <div class="caution">
+    <p>교통상황에 따라 버스 시간표보다 조금 늦거나 일찍 도착할 수 있으니 주의바랍니다.</p>
+    <p>E6100B, E6100, E6104, E6104B 버스는 ebus앱, 신용카드로 결제 가능하며 교통카드 및 현금 결제는 불가능합니다.</p>
+    <p>tel. 032-426-1100 / e-mail. rsv@stellarmarinahotel.com</p>
+  </div>
+  <h1>근처 둘러볼만한 곳 </h1>
+  <p>클릭(터치)하면 설명을 보실 수 있습니다.</p>
 
 
-    </div> <!-- end of locationCont -->
-  <!-- [locations.ejs] page ends from here -->
+
+  <div class="placesCont" id="places">
+
+    <% places.forEach(function(elPlace){ %>
+    <a href="#places" class="elemPlace" data-context="<%= elPlace.context %>" data-category="<%= elPlace.category %>" data-weblink="<%= elPlace.weblink %>" data-maplink="<%= elPlace.maplink %>">
+      <img src="/pub/<%= elPlace.image %>"/>
+      <h4><%= elPlace.title %></h4>
+      <p class="extra"><%= elPlace.extra %></p>
+      <p><%= elPlace.context.slice(0,70) %></p>
+    </a>
+    <% }) %>
+
+  </div>
+
+  <div id="lightbox">
+    <div id="lightboxImg" style="background-image:url('https://i.imgur.com/unYxhKD.jpg');" onclick="closeLightbox()">&nbsp;</div>
+    <h1 id="title">제목</h1>
+    <p class="iconFood"><svg enable-background="new 0 0 500 500" id="Layer_1" version="1.1" viewBox="0 0 500 500" height="40px" width="40px"
+      xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path clip-rule="evenodd" d="M243.732,119.899c-26.893,26.894-20.625,61.868-29.622,95.939
+      L63.296,63.568c-3.274-3.46-7.999-5.634-13.177-5.634c-9.995,0-18.17,8.083-18.17,18.17v6.176
+      c0,54.788,23.623,156.183,97.398,237.404L42.49,406.457c-14.086,14.072-14.086,36.971,0,51.052c14.08,14.092,36.977,14.092,50.968,0
+      l86.582-86.675l51.791,51.79l44.698-40.612l75.506,75.497c13.983,14.092,36.883,14.092,50.962,0
+      c14.092-14.081,14.092-36.979,0-51.052l-119.476-120.48c34.442-9.449,69.686-2.812,96.585-29.715l81.221-81.219
+      c8.999-8.909,8.999-23.441,0-32.43c-8.997-9.004-23.528-9.004-32.438,0l-71.493,71.407c-5.36,5.358-14.092,5.358-19.448,0
+      c-5.448-5.358-5.448-14.08,0-19.438l71.413-71.504c8.99-8.909,8.99-23.441,0-32.438c-8.995-8.988-23.53-8.988-32.429,0
+      l-71.512,71.415c-5.36,5.448-14.08,5.448-19.441,0c-5.356-5.358-5.356-14.09,0-19.441l71.417-71.504
+      c8.994-8.907,8.994-23.442,0-32.438c-8.998-8.996-23.528-8.996-32.439,0L243.732,119.899z" fill="white" fill-rule="evenodd"/></svg>
+      먹을 거리
+    </p>
+    <p class="iconPlace"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="40px" height="40px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+        <g>
+          <circle cx="255.811" cy="285.309" r="75.217" fill="white"/>
+          <path d="M477,137H352.718L349,108c0-16.568-13.432-30-30-30H191c-16.568,0-30,13.432-30,30l-3.718,29H34
+            c-11.046,0-20,8.454-20,19.5v258c0,11.046,8.954,20.5,20,20.5h443c11.046,0,20-9.454,20-20.5v-258C497,145.454,488.046,137,477,137
+            z M255.595,408.562c-67.928,0-122.994-55.066-122.994-122.993c0-67.928,55.066-122.994,122.994-122.994
+            c67.928,0,122.994,55.066,122.994,122.994C378.589,353.495,323.523,408.562,255.595,408.562z M474,190H369v-31h105V190z" fill="white"/>
+        </g></svg>
+        볼만한 곳
+    </p>
+    <p id="extra">here goes extra</p>
+    <p id="context">here goes context</p>
+    <p><a id="maplink "href="#">지도에서 보기</a><a id="weblink" href="#">웹페이지 방문</a><a href="#places" onclick="closeLightbox()">닫기</a></p>
+  </div>
+
+
+  <script src="/pub/locations.js"></script>
+  <!-- [location.ejs] page ends from here -->
 
   </div>
   <!-- end of main -->
