@@ -5,6 +5,7 @@ const app = express()
 const http = require('http').Server(app)
 const bodyParser = require('body-parser')
 const moment = require('moment')
+console.log('change');
 // advanced priority(view engine, db) - interchangable
 const ejs = require('ejs')
 app.set("view engine", "ejs")
